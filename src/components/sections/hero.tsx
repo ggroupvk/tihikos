@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, PlayCircle } from 'lucide-react';
+import { ArrowRight, Play } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import { getPerson } from '@/lib/queries/persons';
 
@@ -18,66 +18,69 @@ const ATTRIBUTIONS = {
 
 export async function HeroSection({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: 'home' });
-  const tychikos = await getPerson('tychikos').catch(() => null as null | { photo_url: string | null });
-  const portraitSrc = tychikos?.photo_url ?? '/images/tychikos/portrait-3.jpg';
+  const tychikos = await getPerson('tychikos').catch(
+    () => null as null | { photo_url: string | null },
+  );
+  // Prefer mitre portrait if available, otherwise fall back to general portrait
+  const portraitSrc = tychikos?.photo_url ?? '/images/tychikos/portrait-mitre.jpg';
   const lang = locale as 'el' | 'ru' | 'en';
 
   return (
-    <section className="relative bg-[var(--color-paper)] overflow-hidden">
-      <div className="mx-auto max-w-[var(--max-width-wide)] px-6 md:px-12 pt-24 md:pt-28">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16 items-center min-h-[calc(85vh-7rem)]">
-          {/* Photo */}
-          <div className="md:col-span-5 relative aspect-[4/5] md:aspect-auto md:h-[70vh] order-1 overflow-hidden rounded-sm">
-            <Image
-              src={portraitSrc}
-              alt="Metropolitan Tychikos of Paphos"
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 42vw"
-              className="object-cover object-[center_top]"
-            />
-            {/* Subtle vignette */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-ink)]/20 to-transparent" />
-          </div>
+    <section className="relative bg-[var(--color-ink)] text-[var(--color-paper)] overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-12 min-h-[78vh] md:min-h-[82vh]">
+        {/* Photo — full bleed left */}
+        <div className="relative md:col-span-5 aspect-[4/5] md:aspect-auto bg-[var(--color-ink)]">
+          <Image
+            src={portraitSrc}
+            alt="Metropolitan Tychikos of Paphos"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 42vw"
+            className="object-cover object-left"
+          />
+          {/* Right edge fade into ink for seamless join */}
+          <div className="hidden md:block absolute inset-y-0 right-0 w-32 bg-gradient-to-r from-transparent to-[var(--color-ink)]" />
+          {/* Bottom fade on mobile */}
+          <div className="md:hidden absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-[var(--color-ink)]" />
+        </div>
 
-          {/* Quote + CTA */}
-          <div className="md:col-span-7 order-2 py-6 md:py-12">
-            <div className="max-w-xl">
-              <span className="kicker text-[var(--color-burgundy)] mb-6 block">
-                {locale === 'el'
-                  ? 'Ιερά Μητρόπολη Πάφου'
-                  : locale === 'ru'
-                  ? 'Пафосская митрополия'
-                  : 'Metropolis of Paphos'}
-              </span>
+        {/* Quote + CTA */}
+        <div className="md:col-span-7 flex items-center px-6 md:px-12 lg:px-16 py-12 md:py-0">
+          <div className="max-w-2xl">
+            <span className="kicker text-[var(--color-gold-bright)] mb-5 block">
+              {locale === 'el'
+                ? 'Ιερά Μητρόπολη Πάφου'
+                : locale === 'ru'
+                ? 'Пафосская митрополия'
+                : 'Metropolis of Paphos'}
+            </span>
 
-              <blockquote
-                className="font-[family-name:var(--font-heading)] text-[var(--color-ink)] font-semibold leading-[1.15] tracking-tight mb-8"
-                style={{ fontSize: 'clamp(1.75rem, 3.2vw, 2.75rem)' }}
+            <blockquote
+              className="font-[family-name:var(--font-heading)] font-semibold leading-[1.2] tracking-tight mb-7 text-[var(--color-paper)]"
+              style={{ fontSize: 'clamp(1.5rem, 2.6vw, 2.5rem)' }}
+            >
+              {QUOTES[lang]}
+            </blockquote>
+
+            <p className="text-sm md:text-base text-[var(--color-paper)]/70 mb-9">
+              — {ATTRIBUTIONS[lang]}
+            </p>
+
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href={`/${locale}/case`}
+                className="group inline-flex items-center gap-3 px-6 py-3.5 bg-[var(--color-gold-bright)] text-[var(--color-ink)] font-medium text-sm tracking-wide hover:brightness-110 transition-all"
               >
-                {QUOTES[lang]}
-              </blockquote>
-
-              <p className="text-base md:text-lg text-[var(--color-ink-muted)] mb-10">
-                — {ATTRIBUTIONS[lang]}
-              </p>
-
-              <div className="flex flex-wrap gap-3">
-                <Link
-                  href={`/${locale}/case`}
-                  className="group inline-flex items-center gap-3 px-6 py-3.5 bg-[var(--color-burgundy)] text-[var(--color-paper)] font-medium text-sm tracking-wide hover:bg-[var(--color-burgundy-bright)] transition-colors"
-                >
-                  {t('ctaCase')}
-                  <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
-                </Link>
-                <Link
-                  href={`/${locale}/media`}
-                  className="group inline-flex items-center gap-3 px-6 py-3.5 border border-[var(--color-ink)] text-[var(--color-ink)] font-medium text-sm tracking-wide hover:bg-[var(--color-ink)] hover:text-[var(--color-paper)] transition-colors"
-                >
-                  <PlayCircle size={16} />
-                  {t('ctaVideo')}
-                </Link>
-              </div>
+                {t('ctaCase')}
+                <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+              </Link>
+              <Link
+                href={`/${locale}/media`}
+                className="group inline-flex items-center gap-3 px-6 py-3.5 border border-[var(--color-paper)]/40 text-[var(--color-paper)] font-medium text-sm tracking-wide hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)] transition-colors"
+              >
+                <Play size={14} fill="currentColor" />
+                {t('ctaVideo')}
+              </Link>
             </div>
           </div>
         </div>

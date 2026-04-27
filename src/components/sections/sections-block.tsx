@@ -29,7 +29,7 @@ export async function SectionsBlock({ locale }: { locale: string }) {
   const tiles = TILES[lang];
 
   return (
-    <section className="py-16 md:py-20 bg-[var(--color-paper)] border-t border-[var(--color-hairline)]">
+    <section className="py-12 md:py-14 bg-[var(--color-paper)] border-t border-[var(--color-hairline)]">
       <div className="mx-auto max-w-[var(--max-width-wide)] px-6 md:px-12">
         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 md:gap-10">
           {tiles.map((tile) => {

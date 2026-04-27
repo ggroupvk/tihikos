@@ -9,9 +9,9 @@ export async function SupportCarousel({ locale }: { locale: string }) {
   const supporters = all.filter((p) => p.slug !== 'tychikos');
 
   return (
-    <section className="py-16 md:py-24 bg-[var(--color-ink)] text-[var(--color-paper)]">
+    <section className="py-12 md:py-16 bg-[var(--color-ink)] text-[var(--color-paper)]">
       <div className="mx-auto max-w-[var(--max-width-wide)] px-6 md:px-12">
-        <h2 className="text-center font-[family-name:var(--font-heading)] font-bold mb-12 text-2xl md:text-3xl tracking-tight">
+        <h2 className="text-center font-[family-name:var(--font-heading)] font-bold mb-10 text-2xl md:text-3xl tracking-tight">
           {t('supportTitle')}
         </h2>
 

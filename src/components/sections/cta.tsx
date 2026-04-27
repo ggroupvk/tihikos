@@ -27,7 +27,7 @@ export async function CtaSection({ locale }: { locale: string }) {
 
   return (
     <section className="bg-[var(--color-burgundy)] text-[var(--color-paper)]">
-      <div className="mx-auto max-w-[var(--max-width-wide)] px-6 md:px-12 py-16 md:py-20">
+      <div className="mx-auto max-w-[var(--max-width-wide)] px-6 md:px-12 py-12 md:py-14">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
           {/* Left: praying-hands icon as decorative element */}
           <div className="md:col-span-1 hidden md:flex items-start justify-center pt-2">
