@@ -60,15 +60,21 @@ export function Header() {
         <div className="flex h-[68px] md:h-[76px] items-center gap-4 md:gap-8">
           {/* Logo + Brand */}
           <Link href={localizedHref('/')} className="flex items-center gap-3 shrink-0 group">
-            {/* Emblem — round monogram */}
+            {/* Orthodox eight-pointed cross emblem */}
             <span
               aria-hidden
               className="relative w-11 h-11 md:w-12 md:h-12 rounded-full border border-[var(--color-gold)]/60 flex items-center justify-center bg-[var(--color-ink)]"
             >
               <span className="absolute inset-1 rounded-full border border-[var(--color-gold)]/30" />
-              {/* Cross monogram */}
-              <svg viewBox="0 0 24 24" className="w-6 h-6 text-[var(--color-gold-bright)]">
-                <path d="M12 2v20M5 9h14M9 9v6h6V9" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" />
+              <svg viewBox="0 0 32 48" className="w-5 h-7 text-[var(--color-gold-bright)]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square">
+                {/* vertical staff */}
+                <line x1="16" y1="3" x2="16" y2="45" />
+                {/* top crossbar (titulus) */}
+                <line x1="11" y1="9" x2="21" y2="9" />
+                {/* main crossbar */}
+                <line x1="5" y1="17" x2="27" y2="17" />
+                {/* slanted footrest (top-right higher, bottom-left lower) */}
+                <line x1="9" y1="32" x2="23" y2="26" />
               </svg>
             </span>
 
