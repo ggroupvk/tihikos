@@ -12,7 +12,7 @@ import {
   videos,
   news,
   persons,
-  tychikosPhotos,
+  documents,
 } from '../src/lib/mock/data';
 
 async function main() {
@@ -149,6 +149,32 @@ async function main() {
     console.error('  ✗', pErr.message);
   } else {
     console.log(`  ✓ inserted ${pCount ?? personRows.length} persons`);
+  }
+
+  // 6. Clear and insert documents
+  console.log('\n6. Seeding documents...');
+  await supabase.from('documents').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+  const docRows = documents.map((d) => ({
+    slug: d.slug,
+    file_path: d.file_path,
+    file_size_bytes: d.file_size_bytes,
+    source_url: d.source_url,
+    sort_order: d.sort_order,
+    title_el: d.title_el,
+    title_ru: d.title_ru,
+    title_en: d.title_en,
+    description_el: d.description_el,
+    description_ru: d.description_ru,
+    description_en: d.description_en,
+    status: d.status,
+  }));
+  const { error: dErr, count: dCount } = await supabase
+    .from('documents')
+    .insert(docRows, { count: 'exact' });
+  if (dErr) {
+    console.error('  ✗', dErr.message);
+  } else {
+    console.log(`  ✓ inserted ${dCount ?? docRows.length} documents`);
   }
 
   console.log('\n=== Seed complete ===');

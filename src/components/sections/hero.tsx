@@ -1,104 +1,84 @@
-'use client';
-
-import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { useTranslations, useLocale } from 'next-intl';
+import { ArrowRight, PlayCircle } from 'lucide-react';
+import { getTranslations } from 'next-intl/server';
+import { getPerson } from '@/lib/queries/persons';
 
-export function HeroSection() {
-  const t = useTranslations('home');
-  const locale = useLocale();
-  const bgRef = useRef<HTMLDivElement>(null);
+const QUOTES = {
+  el: '«Η αλήθεια του Χριστού δεν εξαρτάται από την απόφαση της πλειοψηφίας. Παραμένει στην Εκκλησία και στους κανόνες των αγίων Πατέρων.»',
+  ru: '«Истина Христова не зависит от решения большинства. Она пребывает в Церкви и в канонах святых отцов.»',
+  en: '"The truth of Christ does not depend on the decision of the majority. It abides in the Church and in the canons of the holy Fathers."',
+} as const;
 
-  useEffect(() => {
-    const el = bgRef.current;
-    if (!el) return;
-    function onScroll() {
-      const y = window.scrollY;
-      if (!el) return;
-      el.style.transform = `translate3d(0, ${y * 0.3}px, 0)`;
-    }
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+const ATTRIBUTIONS = {
+  el: 'Μητροπολίτης Πάφου Τυχικός',
+  ru: 'Митрополит Пафосский Тихикос',
+  en: 'Metropolitan Tychikos of Paphos',
+} as const;
 
-  const kicker =
-    locale === 'el'
-      ? 'Ιερά Μητρόπολη Πάφου'
-      : locale === 'ru'
-      ? 'Пафосская митрополия'
-      : 'Metropolis of Paphos';
-
-  const lede =
-    locale === 'el'
-      ? 'Χρονικό μιας υπόθεσης για την κανονική αλήθεια, τη δικαιοσύνη και την ιερή συνείδηση.'
-      : locale === 'ru'
-      ? 'Хроника дела о канонической правде, справедливости и священной совести.'
-      : 'A chronicle of a case about canonical truth, justice, and sacred conscience.';
+export async function HeroSection({ locale }: { locale: string }) {
+  const t = await getTranslations({ locale, namespace: 'home' });
+  const tychikos = await getPerson('tychikos').catch(() => null as null | { photo_url: string | null });
+  const portraitSrc = tychikos?.photo_url ?? '/images/tychikos/portrait-3.jpg';
+  const lang = locale as 'el' | 'ru' | 'en';
 
   return (
-    <section className="relative min-h-[85vh] md:min-h-[90vh] bg-[var(--color-ink)] text-[var(--color-paper)] overflow-hidden">
-      {/* Parallax background layer */}
-      <div ref={bgRef} className="absolute inset-0 will-change-transform">
-        {/* Vignette */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(ellipse at 70% 30%, rgba(184, 147, 90, 0.12) 0%, transparent 55%), radial-gradient(ellipse at 20% 80%, rgba(92, 26, 27, 0.18) 0%, transparent 60%)',
-          }}
-        />
-        {/* Archival grain texture via SVG noise */}
-        <div
-          className="absolute inset-0 opacity-[0.07] mix-blend-overlay"
-          style={{
-            backgroundImage:
-              'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence baseFrequency=\'0.9\' numOctaves=\'2\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.4\'/%3E%3C/svg%3E")',
-          }}
-        />
-      </div>
-
-      {/* Content */}
-      <div className="relative mx-auto max-w-[var(--max-width-wide)] px-6 md:px-12 min-h-[85vh] md:min-h-[90vh] flex flex-col justify-between pt-28 md:pt-32 pb-10 md:pb-14">
-        {/* Top kicker row */}
-        <div className="flex items-center gap-6">
-          <div className="w-16 h-px bg-[var(--color-gold)]" />
-          <span className="kicker text-[var(--color-gold-bright)]">{kicker}</span>
-        </div>
-
-        {/* Middle: title */}
-        <div className="max-w-5xl">
-          <h1 className="display-xl font-[family-name:var(--font-heading)] text-[var(--color-paper)]">
-            {t('heroTitle')}
-          </h1>
-          <p className="mt-6 md:mt-8 text-lg md:text-xl text-[var(--color-paper)]/75 max-w-2xl leading-relaxed italic font-[family-name:var(--font-heading)]">
-            {lede}
-          </p>
-        </div>
-
-        {/* Bottom: actions + meta */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 pt-8 border-t border-[var(--color-hairline-dark)]">
-          <div className="flex flex-wrap gap-0">
-            <Link
-              href={`/${locale}/case`}
-              className="group inline-flex items-center gap-3 px-6 py-4 bg-[var(--color-burgundy)] text-[var(--color-paper)] font-medium text-sm tracking-wide hover:bg-[var(--color-burgundy-bright)] transition-colors"
-            >
-              {t('ctaCase')}
-              <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
-            </Link>
-            <Link
-              href={`/${locale}/media`}
-              className="group inline-flex items-center gap-3 px-6 py-4 border border-l-0 border-[var(--color-hairline-dark)] text-[var(--color-paper)] font-medium text-sm tracking-wide hover:border-[var(--color-gold)] hover:text-[var(--color-gold-bright)] transition-colors"
-            >
-              {t('ctaVideo')}
-              <span className="transition-transform group-hover:translate-x-1">&rarr;</span>
-            </Link>
+    <section className="relative bg-[var(--color-paper)] overflow-hidden">
+      <div className="mx-auto max-w-[var(--max-width-wide)] px-6 md:px-12 pt-24 md:pt-28">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16 items-center min-h-[calc(85vh-7rem)]">
+          {/* Photo */}
+          <div className="md:col-span-5 relative aspect-[4/5] md:aspect-auto md:h-[70vh] order-1 overflow-hidden rounded-sm">
+            <Image
+              src={portraitSrc}
+              alt="Metropolitan Tychikos of Paphos"
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 42vw"
+              className="object-cover object-[center_top]"
+            />
+            {/* Subtle vignette */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-ink)]/20 to-transparent" />
           </div>
 
-          <div className="flex items-center gap-4 text-[var(--color-paper)]/50">
-            <span className="kicker text-[10px]">
-              {locale === 'el' ? 'Κυλήστε' : locale === 'ru' ? 'Листайте' : 'Scroll'}
-            </span>
-            <div className="w-16 h-px bg-[var(--color-gold)]" />
+          {/* Quote + CTA */}
+          <div className="md:col-span-7 order-2 py-6 md:py-12">
+            <div className="max-w-xl">
+              <span className="kicker text-[var(--color-burgundy)] mb-6 block">
+                {locale === 'el'
+                  ? 'Ιερά Μητρόπολη Πάφου'
+                  : locale === 'ru'
+                  ? 'Пафосская митрополия'
+                  : 'Metropolis of Paphos'}
+              </span>
+
+              <blockquote
+                className="font-[family-name:var(--font-heading)] text-[var(--color-ink)] font-semibold leading-[1.15] tracking-tight mb-8"
+                style={{ fontSize: 'clamp(1.75rem, 3.2vw, 2.75rem)' }}
+              >
+                {QUOTES[lang]}
+              </blockquote>
+
+              <p className="text-base md:text-lg text-[var(--color-ink-muted)] mb-10">
+                — {ATTRIBUTIONS[lang]}
+              </p>
+
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  href={`/${locale}/case`}
+                  className="group inline-flex items-center gap-3 px-6 py-3.5 bg-[var(--color-burgundy)] text-[var(--color-paper)] font-medium text-sm tracking-wide hover:bg-[var(--color-burgundy-bright)] transition-colors"
+                >
+                  {t('ctaCase')}
+                  <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+                </Link>
+                <Link
+                  href={`/${locale}/media`}
+                  className="group inline-flex items-center gap-3 px-6 py-3.5 border border-[var(--color-ink)] text-[var(--color-ink)] font-medium text-sm tracking-wide hover:bg-[var(--color-ink)] hover:text-[var(--color-paper)] transition-colors"
+                >
+                  <PlayCircle size={16} />
+                  {t('ctaVideo')}
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>

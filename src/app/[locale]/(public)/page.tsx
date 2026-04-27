@@ -1,6 +1,10 @@
-import { StoryBlock } from '@/components/sections/story-block';
-import { EvidenceBlock } from '@/components/sections/evidence-block';
-import { MediaCtaBlock } from '@/components/sections/media-cta-block';
+import { HeroSection } from '@/components/sections/hero';
+import { TimelineSection } from '@/components/sections/timeline';
+import { NewsSection } from '@/components/sections/news-section';
+import { VideosSection } from '@/components/sections/videos-section';
+import { SupportCarousel } from '@/components/sections/support-carousel';
+import { CtaSection } from '@/components/sections/cta';
+import { SectionsBlock } from '@/components/sections/sections-block';
 
 export default async function HomePage({
   params,
@@ -11,9 +15,13 @@ export default async function HomePage({
 
   return (
     <main>
-      <StoryBlock locale={locale} />
-      <EvidenceBlock locale={locale} />
-      <MediaCtaBlock locale={locale} />
+      <HeroSection locale={locale} />
+      <TimelineSection locale={locale} />
+      <NewsSection locale={locale} />
+      <VideosSection locale={locale} />
+      <SupportCarousel locale={locale} />
+      <CtaSection locale={locale} />
+      <SectionsBlock locale={locale} />
     </main>
   );
 }
