@@ -1,7 +1,19 @@
 import { User } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import { getPersons } from '@/lib/queries/persons';
-import { localized } from '@/lib/utils';
+import { cn, localized } from '@/lib/utils';
+
+// Some source photos are collages (e.g. dimos.jpg has Dimos on the left and
+// Archbishop George on the right; neophytos.jpg has Neophytos on the left).
+// For these we crop via object-position so only the relevant face shows.
+const PHOTO_POSITION: Record<string, string> = {
+  'dimos-serkelidis': 'object-[20%_center]',
+  'neophytos-morphou': 'object-[25%_center]',
+  'savvas-agiorritis': 'object-[center_top]',
+  'theodoros-zisis': 'object-[center_top]',
+  'athanasios-limassol': 'object-center',
+  'seraphim-kythira': 'object-[center_top]',
+};
 
 export async function SupportCarousel({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: 'home' });
@@ -26,7 +38,10 @@ export async function SupportCarousel({ locale }: { locale: string }) {
                     <img
                       src={person.photo_url}
                       alt={localized(person, 'name', locale as 'el' | 'ru' | 'en')}
-                      className="absolute inset-0 w-full h-full object-cover"
+                      className={cn(
+                        'absolute inset-0 w-full h-full object-cover',
+                        PHOTO_POSITION[person.slug] ?? 'object-center',
+                      )}
                     />
                   ) : (
                     <User size={36} strokeWidth={1.2} className="text-[var(--color-gold-bright)]/60" />
