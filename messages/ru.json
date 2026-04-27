@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "siteTitle": "Поддержка митрополита Тихикоса",
+    "siteDescription": "Официальный веб-сайт в поддержку митрополита Пафосского Тихикоса"
+  },
+  "nav": {
+    "home": "Главная",
+    "about": "О митрополите",
+    "case": "Дело",
+    "support": "Поддержка",
+    "media": "Медиа",
+    "news": "Новости"
+  },
+  "home": {
+    "heroTitle": "Митрополит Пафосский Тихикос",
+    "heroSubtitle": "Правда не молчит",
+    "ctaCase": "Подробнее о деле",
+    "ctaVideo": "Смотреть видео",
+    "timelineTitle": "Хронология",
+    "latestNews": "Последние новости",
+    "latestVideos": "Последние видео",
+    "supportTitle": "Голоса поддержки",
+    "ctaTitle": "Поддержите митрополита",
+    "ctaShare": "Поделитесь",
+    "ctaSubscribe": "Подпишитесь"
+  },
+  "support": {
+    "formTitle": "Написать письмо поддержки",
+    "name": "Имя",
+    "title": "Должность / Сан",
+    "country": "Страна",
+    "email": "Email",
+    "message": "Текст письма",
+    "gdprConsent": "Я согласен на обработку персональных данных",
+    "submit": "Отправить",
+    "successMessage": "Спасибо за вашу поддержку!"
+  },
+  "footer": {
+    "contactTitle": "Обратная связь",
+    "contactName": "Имя",
+    "contactEmail": "Email",
+    "contactSubject": "Тема",
+    "contactMessage": "Сообщение",
+    "contactSend": "Отправить",
+    "contactGdpr": "Согласен на обработку данных",
+    "howToHelp": "Как помочь",
+    "spread": "Распространять материалы",
+    "translate": "Участвовать в переводах",
+    "pray": "Молиться",
+    "rights": "Все права защищены"
+  },
+  "common": {
+    "readMore": "Подробнее",
+    "download": "Скачать",
+    "viewAll": "Смотреть все",
+    "filter": "Фильтр",
+    "loading": "Загрузка...",
+    "error": "Ошибка",
+    "backToHome": "На главную",
+    "videos": "Видео",
+    "documents": "Документы",
+    "all": "Все"
+  }
+}

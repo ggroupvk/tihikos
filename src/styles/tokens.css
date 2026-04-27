@@ -1,0 +1,53 @@
+/* Design Tokens — tihikos.com */
+/* Church-style: strict, reverent, modern */
+
+@theme {
+  /* === Colors === */
+  --color-primary: #0d1f3c;          /* Dark blue — headers, nav, block backgrounds */
+  --color-accent: #c9a84c;           /* Gold — buttons, lines, decorative elements */
+  --color-background: #f9f7f2;       /* Cream white — main background */
+  --color-background-alt: #f5e9c8;   /* Light gold — quotes, callouts */
+  --color-text: #1a1a1a;             /* Near black — body text */
+  --color-text-light: #4a4a4a;       /* Gray — secondary text */
+  --color-text-on-dark: #f9f7f2;     /* Cream — text on dark backgrounds */
+  --color-border: #d4c9a8;           /* Muted gold — borders, dividers */
+  --color-error: #b91c1c;            /* Red — form errors */
+  --color-success: #15803d;          /* Green — success states */
+
+  /* === Typography === */
+  --font-heading: 'Cinzel', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-size-xs: 0.75rem;           /* 12px */
+  --font-size-sm: 0.875rem;          /* 14px */
+  --font-size-base: 1rem;            /* 16px — minimum body */
+  --font-size-lg: 1.125rem;          /* 18px */
+  --font-size-xl: 1.25rem;           /* 20px */
+  --font-size-2xl: 1.5rem;           /* 24px */
+  --font-size-3xl: 1.875rem;         /* 30px */
+  --font-size-4xl: 2.25rem;          /* 36px */
+  --font-size-5xl: 3rem;             /* 48px — hero title */
+
+  /* === Spacing === */
+  --spacing-section: 5rem;           /* Between page sections */
+  --spacing-block: 3rem;             /* Between content blocks */
+  --spacing-element: 1.5rem;         /* Between elements */
+
+  /* === Layout === */
+  --max-width-content: 1280px;
+  --max-width-text: 720px;
+  --max-width-wide: 1440px;
+
+  /* === Breakpoints (reference, used in Tailwind) === */
+  /* sm: 320px — mobile */
+  /* md: 768px — tablet */
+  /* lg: 1280px — desktop */
+
+  /* === Shadows === */
+  --shadow-card: 0 2px 8px rgba(13, 31, 60, 0.08);
+  --shadow-elevated: 0 4px 16px rgba(13, 31, 60, 0.12);
+
+  /* === Borders === */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+}

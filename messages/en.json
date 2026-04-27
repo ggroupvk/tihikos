@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "siteTitle": "Support Metropolitan Tychikos",
+    "siteDescription": "Official website in support of Metropolitan Tychikos of Paphos"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "The Metropolitan",
+    "case": "The Case",
+    "support": "Support",
+    "media": "Media",
+    "news": "News"
+  },
+  "home": {
+    "heroTitle": "Metropolitan Tychikos of Paphos",
+    "heroSubtitle": "Truth does not stay silent",
+    "ctaCase": "Read the case",
+    "ctaVideo": "Watch videos",
+    "timelineTitle": "Timeline",
+    "latestNews": "Latest News",
+    "latestVideos": "Latest Videos",
+    "supportTitle": "Voices of Support",
+    "ctaTitle": "Support the Metropolitan",
+    "ctaShare": "Share",
+    "ctaSubscribe": "Subscribe"
+  },
+  "support": {
+    "formTitle": "Write a letter of support",
+    "name": "Full name",
+    "title": "Position / Rank",
+    "country": "Country",
+    "email": "Email",
+    "message": "Your message",
+    "gdprConsent": "I consent to the processing of my personal data",
+    "submit": "Submit",
+    "successMessage": "Thank you for your support!"
+  },
+  "footer": {
+    "contactTitle": "Contact Us",
+    "contactName": "Name",
+    "contactEmail": "Email",
+    "contactSubject": "Subject",
+    "contactMessage": "Message",
+    "contactSend": "Send",
+    "contactGdpr": "I consent to data processing",
+    "howToHelp": "How to help",
+    "spread": "Spread the materials",
+    "translate": "Participate in translations",
+    "pray": "Pray",
+    "rights": "All rights reserved"
+  },
+  "common": {
+    "readMore": "Read more",
+    "download": "Download",
+    "viewAll": "View all",
+    "filter": "Filter",
+    "loading": "Loading...",
+    "error": "Error",
+    "backToHome": "Back to home",
+    "videos": "Videos",
+    "documents": "Documents",
+    "all": "All"
+  }
+}

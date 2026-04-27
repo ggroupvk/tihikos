@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+@theme {
+  /* === Archive palette === */
+  --color-paper: #EDE7D7;              /* parchment — main background */
+  --color-paper-deep: #E1DAC7;         /* deeper parchment — alt sections */
+  --color-ink: #141210;                /* warm near-black — printed ink */
+  --color-ink-soft: #2A2724;           /* softer ink for body text */
+  --color-ink-muted: #5C5752;          /* warm gray — secondary text */
+  --color-burgundy: #5C1A1B;           /* wax seal / martyric red — primary accent */
+  --color-burgundy-bright: #7A2627;    /* lighter burgundy for hover */
+  --color-gold: #B8935A;               /* muted manuscript gold — rare accent */
+  --color-gold-bright: #C9A56A;        /* slightly brighter on dark */
+  --color-stone: #8A827A;              /* warm stone gray */
+  --color-hairline: rgba(20, 18, 16, 0.12);       /* thin rules on paper */
+  --color-hairline-dark: rgba(237, 231, 215, 0.12); /* thin rules on ink */
+
+  /* === Typography === */
+  --font-heading: 'Noto Serif Display', serif;  /* premium multi-script display serif */
+  --font-display: 'Cinzel', serif;      /* Latin display — kickers, monograms */
+  --font-body: 'Inter', sans-serif;     /* body + UI */
+
+  --max-width-content: 1280px;
+  --max-width-text: 680px;
+  --max-width-wide: 1440px;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-ink-soft);
+  background-color: var(--color-paper);
+  line-height: 1.6;
+  letter-spacing: -0.005em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-burgundy);
+  outline-offset: 3px;
+}
+
+::selection {
+  background-color: var(--color-burgundy);
+  color: var(--color-paper);
+}
+
+/* === Editorial utilities === */
+.display-xl { font-size: clamp(2.75rem, 7vw, 6rem); letter-spacing: -0.03em; line-height: 1; font-weight: 700; }
+.display-lg { font-size: clamp(2rem, 5vw, 4rem); letter-spacing: -0.02em; line-height: 1.05; font-weight: 600; }
+.display-md { font-size: clamp(1.75rem, 3.5vw, 2.75rem); letter-spacing: -0.015em; line-height: 1.1; font-weight: 600; }
+.monument { font-size: clamp(4rem, 11vw, 10rem); letter-spacing: -0.04em; line-height: 0.9; font-weight: 600; }
+
+.kicker {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.roman {
+  font-family: var(--font-display);
+  letter-spacing: 0.08em;
+  font-weight: 500;
+}
+
+/* === Subtle reveal on scroll (CSS only via scroll-driven animation) === */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: reveal linear;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* === Image rendering === */
+img { image-rendering: -webkit-optimize-contrast; }
