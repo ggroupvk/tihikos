@@ -54,8 +54,20 @@ export function Footer() {
                 className="relative w-12 h-12 rounded-full border border-[var(--color-gold)]/70 flex items-center justify-center bg-transparent shrink-0"
               >
                 <span className="absolute inset-[3px] rounded-full border border-[var(--color-gold)]/30" />
-                <svg viewBox="0 0 24 24" className="w-6 h-6 text-[var(--color-gold-bright)]" fill="currentColor">
-                  <path d="M10.5 3h3v7.5H21v3h-7.5V21h-3v-7.5H3v-3h7.5V3z" />
+                <svg viewBox="0 0 48 48" className="w-7 h-7 text-[var(--color-gold-bright)]" aria-hidden>
+                  <g fill="currentColor" opacity="0.35">
+                    <path d="M24 2v3M24 43v3M2 24h3M43 24h3M9 9l2 2M37 37l2 2M39 9l-2 2M11 37l-2 2" stroke="currentColor" strokeWidth="0.7" />
+                  </g>
+                  <g fill="currentColor">
+                    <path d="M22 8 Q23 14 21.5 18 L18 18 Q22 22 18 26 L21.5 26 Q23 32 22 38 L26 38 Q25 32 26.5 26 L30 26 Q26 22 30 18 L26.5 18 Q25 14 26 8 Z" />
+                  </g>
+                  <circle cx="24" cy="24" r="1.4" fill="var(--color-burgundy)" />
+                  <g fill="currentColor">
+                    <circle cx="24" cy="6" r="1.2" />
+                    <circle cx="24" cy="42" r="1.2" />
+                    <circle cx="6" cy="24" r="1.2" />
+                    <circle cx="42" cy="24" r="1.2" />
+                  </g>
                 </svg>
               </span>
               <span className="flex flex-col leading-tight">
