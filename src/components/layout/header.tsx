@@ -62,31 +62,25 @@ export function Header() {
         <div className="flex h-[68px] md:h-[76px] items-center gap-4 md:gap-8">
           {/* Logo + Brand */}
           <Link href={localizedHref('/')} className="flex items-center gap-3 shrink-0 group">
-            {/* Decorative Byzantine cross — pattée flared arms with finial dots and rays */}
+            {/* Russian Orthodox eight-pointed cross — vertical staff, titulus, main bar, slanted footrest */}
             <span
               aria-hidden
               className="relative w-11 h-11 md:w-12 md:h-12 rounded-full border border-[var(--color-gold)]/70 flex items-center justify-center bg-transparent"
             >
               <span className="absolute inset-[3px] rounded-full border border-[var(--color-gold)]/30" />
-              <svg viewBox="0 0 48 48" className="w-7 h-7 text-[var(--color-gold-bright)]" aria-hidden>
-                {/* Subtle radiating rays */}
-                <g fill="currentColor" opacity="0.35">
-                  <path d="M24 2v3M24 43v3M2 24h3M43 24h3M9 9l2 2M37 37l2 2M39 9l-2 2M11 37l-2 2" stroke="currentColor" strokeWidth="0.7" />
-                </g>
-                {/* Cross body — pattée with concave edges and small finial drops */}
-                <g fill="currentColor">
-                  {/* Vertical arm */}
-                  <path d="M22 8 Q23 14 21.5 18 L18 18 Q22 22 18 26 L21.5 26 Q23 32 22 38 L26 38 Q25 32 26.5 26 L30 26 Q26 22 30 18 L26.5 18 Q25 14 26 8 Z" />
-                </g>
-                {/* Center pearl */}
-                <circle cx="24" cy="24" r="1.4" fill="var(--color-burgundy)" />
-                {/* Finial dots at the four arm ends */}
-                <g fill="currentColor">
-                  <circle cx="24" cy="6" r="1.2" />
-                  <circle cx="24" cy="42" r="1.2" />
-                  <circle cx="6" cy="24" r="1.2" />
-                  <circle cx="42" cy="24" r="1.2" />
-                </g>
+              <svg
+                viewBox="0 0 32 48"
+                className="w-5 h-7 text-[var(--color-gold-bright)]"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="square"
+                aria-hidden
+              >
+                <line x1="16" y1="3" x2="16" y2="45" />
+                <line x1="11" y1="9" x2="21" y2="9" />
+                <line x1="5" y1="17" x2="27" y2="17" />
+                <line x1="9" y1="32" x2="23" y2="26" />
               </svg>
             </span>
 

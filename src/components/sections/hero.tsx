@@ -24,119 +24,70 @@ export async function HeroSection({ locale }: { locale: string }) {
   const portraitSrc = tychikos?.photo_url ?? '/images/tychikos/portrait-mitre.jpg';
   const lang = locale as 'el' | 'ru' | 'en';
 
-  const kicker =
-    locale === 'el'
-      ? 'Ιερά Μητρόπολη Πάφου · 70ός Μητροπολίτης'
-      : locale === 'ru'
-      ? 'Пафосская митрополия · 70-й митрополит'
-      : 'Metropolis of Paphos · 70th Metropolitan';
-
   return (
-    <section className="relative bg-[var(--color-paper)] text-[var(--color-ink)] overflow-hidden">
-      {/* Decorative paper texture / vignette */}
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-[0.4] pointer-events-none"
-        style={{
-          backgroundImage:
-            'radial-gradient(ellipse at 80% 50%, rgba(92, 26, 27, 0.08) 0%, transparent 60%), radial-gradient(ellipse at 20% 100%, rgba(184, 147, 90, 0.08) 0%, transparent 50%)',
-        }}
-      />
+    <section className="relative bg-[var(--color-ink)] text-[var(--color-paper)] overflow-hidden">
+      {/* Full-bleed background image (only the left half is the actual portrait;
+          the right half is the source's red/maroon backdrop, which we let
+          continue under the text via a smooth horizontal gradient) */}
+      <div className="absolute inset-0">
+        <Image
+          src={portraitSrc}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[20%_center] md:object-[30%_center]"
+        />
+        {/* Subtle dark vignette across the whole image to lift contrast */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-black/30 to-[var(--color-ink)]" />
+        {/* Right-side darken to make text legible without covering the metropolitan */}
+        <div className="absolute inset-y-0 right-0 w-[58%] md:w-[55%] bg-gradient-to-l from-[var(--color-ink)] from-50% to-transparent" />
+        {/* Top fade to merge with header */}
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[var(--color-ink)]/95 to-transparent" />
+      </div>
 
-      <div className="relative mx-auto max-w-[var(--max-width-wide)] px-6 md:px-12 pt-28 md:pt-32 pb-12 md:pb-16">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-14 items-center min-h-[70vh]">
-          {/* LEFT: Editorial copy */}
-          <div className="md:col-span-7 order-2 md:order-1">
-            {/* Decorative top line + kicker */}
-            <div className="flex items-center gap-4 mb-6">
-              <span className="block w-12 h-px bg-[var(--color-burgundy)]" />
-              <span className="kicker text-[var(--color-burgundy)]">{kicker}</span>
-            </div>
+      {/* Content grid */}
+      <div className="relative grid grid-cols-1 md:grid-cols-12 min-h-[78vh] md:min-h-[85vh]">
+        {/* Left empty space — the portrait is the visual */}
+        <div className="hidden md:block md:col-span-5" />
 
-            {/* Headline quote — large editorial serif, opening mark detached */}
-            <div className="relative mb-8">
-              <span
-                aria-hidden
-                className="absolute -left-1 -top-6 md:-left-3 md:-top-10 font-[family-name:var(--font-heading)] text-[var(--color-burgundy)]/15 leading-none select-none"
-                style={{ fontSize: 'clamp(7rem, 14vw, 14rem)' }}
-              >
-                &ldquo;
-              </span>
-              <blockquote
-                className="relative font-[family-name:var(--font-heading)] font-semibold leading-[1.18] tracking-tight text-[var(--color-ink)]"
-                style={{ fontSize: 'clamp(1.6rem, 2.9vw, 2.75rem)' }}
-              >
-                {QUOTES[lang]}
-              </blockquote>
-            </div>
+        {/* Right side text */}
+        <div className="md:col-span-7 flex items-center px-6 md:px-12 lg:px-16 pt-28 md:pt-0 pb-12 md:pb-0">
+          <div className="max-w-2xl">
+            <span className="kicker text-[var(--color-gold-bright)] mb-5 block">
+              {locale === 'el'
+                ? 'Ιερά Μητρόπολη Πάφου'
+                : locale === 'ru'
+                ? 'Пафосская митрополия'
+                : 'Metropolis of Paphos'}
+            </span>
 
-            {/* Attribution — gold rule + name */}
-            <div className="flex items-center gap-3 mb-10">
-              <span className="block w-8 h-px bg-[var(--color-gold)]" />
-              <p className="text-sm md:text-base font-[family-name:var(--font-heading)] text-[var(--color-ink-muted)] tracking-wide">
-                {ATTRIBUTIONS[lang]}
-              </p>
-            </div>
+            <blockquote
+              className="font-[family-name:var(--font-heading)] font-semibold leading-[1.18] tracking-tight mb-6 text-[var(--color-paper)]"
+              style={{ fontSize: 'clamp(1.5rem, 2.6vw, 2.5rem)' }}
+            >
+              {QUOTES[lang]}
+            </blockquote>
 
-            {/* CTAs */}
+            <p className="text-sm md:text-base text-[var(--color-paper)]/70 mb-8">
+              — {ATTRIBUTIONS[lang]}
+            </p>
+
             <div className="flex flex-wrap gap-3">
               <Link
                 href={`/${locale}/case`}
-                className="group inline-flex items-center gap-3 px-7 py-4 bg-[var(--color-burgundy)] text-[var(--color-paper)] font-medium text-sm tracking-wide hover:bg-[var(--color-burgundy-bright)] transition-colors"
+                className="group inline-flex items-center gap-3 px-6 py-3.5 bg-[var(--color-gold-bright)] text-[var(--color-ink)] font-medium text-sm tracking-wide hover:brightness-110 transition-all"
               >
                 {t('ctaCase')}
                 <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
               </Link>
               <Link
                 href={`/${locale}/media`}
-                className="group inline-flex items-center gap-3 px-7 py-4 border border-[var(--color-ink)]/25 text-[var(--color-ink)] font-medium text-sm tracking-wide hover:bg-[var(--color-ink)] hover:text-[var(--color-paper)] hover:border-[var(--color-ink)] transition-colors"
+                className="group inline-flex items-center gap-3 px-6 py-3.5 border border-[var(--color-paper)]/40 text-[var(--color-paper)] font-medium text-sm tracking-wide hover:bg-[var(--color-paper)] hover:text-[var(--color-ink)] transition-colors"
               >
                 <Play size={14} fill="currentColor" />
                 {t('ctaVideo')}
               </Link>
-            </div>
-          </div>
-
-          {/* RIGHT: Portrait with halo + corner ornaments */}
-          <div className="md:col-span-5 order-1 md:order-2 relative flex items-center justify-center py-4">
-            {/* Decorative golden halo behind portrait */}
-            <div
-              aria-hidden
-              className="absolute inset-0 flex items-center justify-center pointer-events-none"
-            >
-              <div
-                className="w-[110%] h-[110%] rounded-full"
-                style={{
-                  background:
-                    'radial-gradient(circle, rgba(184, 147, 90, 0.18) 0%, rgba(92, 26, 27, 0.06) 45%, transparent 70%)',
-                }}
-              />
-            </div>
-
-            {/* Corner ornaments — thin gold L-frames */}
-            <span aria-hidden className="absolute top-0 left-0 w-12 h-12 border-l border-t border-[var(--color-gold)]/60" />
-            <span aria-hidden className="absolute top-0 right-0 w-12 h-12 border-r border-t border-[var(--color-gold)]/60" />
-            <span aria-hidden className="absolute bottom-0 left-0 w-12 h-12 border-l border-b border-[var(--color-gold)]/60" />
-            <span aria-hidden className="absolute bottom-0 right-0 w-12 h-12 border-r border-b border-[var(--color-gold)]/60" />
-
-            {/* Portrait — full bleed inside container, soft fade at edges */}
-            <div
-              className="relative w-full aspect-[4/5] max-h-[68vh] overflow-hidden"
-              style={{
-                maskImage:
-                  'radial-gradient(ellipse at center, black 55%, rgba(0,0,0,0.85) 75%, transparent 100%)',
-                WebkitMaskImage:
-                  'radial-gradient(ellipse at center, black 55%, rgba(0,0,0,0.85) 75%, transparent 100%)',
-              }}
-            >
-              <Image
-                src={portraitSrc}
-                alt="Metropolitan Tychikos of Paphos"
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, 42vw"
-                className="object-cover object-[center_top]"
-              />
             </div>
           </div>
         </div>
