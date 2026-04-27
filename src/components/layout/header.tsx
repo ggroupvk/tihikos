@@ -52,29 +52,30 @@ export function Header() {
   return (
     <header
       className={cn(
-        'sticky top-0 left-0 right-0 z-50 transition-shadow duration-200 bg-[var(--color-ink)] text-[var(--color-paper)]',
-        scrolled ? 'shadow-md' : '',
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-300 text-[var(--color-paper)]',
+        scrolled
+          ? 'bg-[var(--color-ink)]/85 backdrop-blur-md shadow-[0_1px_0_0_rgba(255,255,255,0.04)]'
+          : 'bg-gradient-to-b from-[var(--color-ink)]/80 via-[var(--color-ink)]/40 to-transparent',
       )}
     >
       <div className="mx-auto max-w-[var(--max-width-wide)] px-4 md:px-8">
         <div className="flex h-[68px] md:h-[76px] items-center gap-4 md:gap-8">
           {/* Logo + Brand */}
           <Link href={localizedHref('/')} className="flex items-center gap-3 shrink-0 group">
-            {/* Orthodox eight-pointed cross emblem */}
+            {/* Byzantine Greek cross — equal-armed, in a gold ring */}
             <span
               aria-hidden
-              className="relative w-11 h-11 md:w-12 md:h-12 rounded-full border border-[var(--color-gold)]/60 flex items-center justify-center bg-[var(--color-ink)]"
+              className="relative w-11 h-11 md:w-12 md:h-12 rounded-full border border-[var(--color-gold)]/70 flex items-center justify-center bg-transparent"
             >
-              <span className="absolute inset-1 rounded-full border border-[var(--color-gold)]/30" />
-              <svg viewBox="0 0 32 48" className="w-5 h-7 text-[var(--color-gold-bright)]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square">
-                {/* vertical staff */}
-                <line x1="16" y1="3" x2="16" y2="45" />
-                {/* top crossbar (titulus) */}
-                <line x1="11" y1="9" x2="21" y2="9" />
-                {/* main crossbar */}
-                <line x1="5" y1="17" x2="27" y2="17" />
-                {/* slanted footrest (top-right higher, bottom-left lower) */}
-                <line x1="9" y1="32" x2="23" y2="26" />
+              <span className="absolute inset-[3px] rounded-full border border-[var(--color-gold)]/30" />
+              <svg
+                viewBox="0 0 24 24"
+                className="w-6 h-6 text-[var(--color-gold-bright)]"
+                fill="currentColor"
+                aria-hidden
+              >
+                {/* Equal-armed Greek/Byzantine cross with slightly flared ends (pattée-like) */}
+                <path d="M10.5 3h3v7.5H21v3h-7.5V21h-3v-7.5H3v-3h7.5V3z" />
               </svg>
             </span>
 
@@ -111,22 +112,20 @@ export function Header() {
 
           {/* Lang + mobile button */}
           <div className="flex items-center gap-3 ml-auto lg:ml-0">
-            <div className="hidden md:flex items-center gap-1 text-[11px] font-[family-name:var(--font-display)] tracking-[0.15em]">
-              {LOCALES.map(({ code, label }, i) => (
-                <span key={code} className="flex items-center gap-1">
-                  {i > 0 && <span className="text-[var(--color-paper)]/30">·</span>}
-                  <Link
-                    href={switchLocalePath(code)}
-                    className={cn(
-                      'px-1 transition-colors',
-                      locale === code
-                        ? 'text-[var(--color-gold-bright)]'
-                        : 'text-[var(--color-paper)]/60 hover:text-[var(--color-paper)]',
-                    )}
-                  >
-                    {label}
-                  </Link>
-                </span>
+            <div className="hidden md:flex items-center gap-1.5 font-[family-name:var(--font-display)] tracking-[0.12em]">
+              {LOCALES.map(({ code, label }) => (
+                <Link
+                  key={code}
+                  href={switchLocalePath(code)}
+                  className={cn(
+                    'flex items-center justify-center min-w-[34px] h-[28px] px-1.5 text-[11px] border transition-all',
+                    locale === code
+                      ? 'border-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/10 text-[var(--color-gold-bright)]'
+                      : 'border-[var(--color-paper)]/20 text-[var(--color-paper)]/60 hover:border-[var(--color-paper)]/50 hover:text-[var(--color-paper)]',
+                  )}
+                >
+                  {label}
+                </Link>
               ))}
             </div>
 
@@ -158,23 +157,21 @@ export function Header() {
                 {t(key)}
               </Link>
             ))}
-            <div className="flex items-center gap-2 pt-4 mt-2 border-t border-[var(--color-hairline-dark)] text-xs font-[family-name:var(--font-display)] tracking-[0.15em]">
-              {LOCALES.map(({ code, label }, i) => (
-                <span key={code} className="flex items-center gap-2">
-                  {i > 0 && <span className="text-[var(--color-paper)]/30">·</span>}
-                  <Link
-                    href={switchLocalePath(code)}
-                    onClick={() => setMobileOpen(false)}
-                    className={cn(
-                      'px-1',
-                      locale === code
-                        ? 'text-[var(--color-gold-bright)]'
-                        : 'text-[var(--color-paper)]/60',
-                    )}
-                  >
-                    {label}
-                  </Link>
-                </span>
+            <div className="flex items-center gap-1.5 pt-4 mt-2 border-t border-[var(--color-hairline-dark)] font-[family-name:var(--font-display)] tracking-[0.12em]">
+              {LOCALES.map(({ code, label }) => (
+                <Link
+                  key={code}
+                  href={switchLocalePath(code)}
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    'flex items-center justify-center min-w-[40px] h-[32px] px-2 text-xs border',
+                    locale === code
+                      ? 'border-[var(--color-gold-bright)] bg-[var(--color-gold-bright)]/10 text-[var(--color-gold-bright)]'
+                      : 'border-[var(--color-paper)]/20 text-[var(--color-paper)]/60',
+                  )}
+                >
+                  {label}
+                </Link>
               ))}
             </div>
           </nav>

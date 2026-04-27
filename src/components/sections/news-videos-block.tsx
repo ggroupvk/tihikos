@@ -25,7 +25,7 @@ export async function NewsVideosBlock({ locale }: { locale: string }) {
   }
 
   return (
-    <section className="py-12 md:py-16 bg-[var(--color-paper)] border-t border-[var(--color-hairline)]">
+    <section className="py-10 md:py-12 bg-[var(--color-paper)] border-t border-[var(--color-hairline)]">
       <div className="mx-auto max-w-[var(--max-width-wide)] px-6 md:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-14">
           {/* NEWS column */}

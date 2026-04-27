@@ -21,31 +21,38 @@ export async function HeroSection({ locale }: { locale: string }) {
   const tychikos = await getPerson('tychikos').catch(
     () => null as null | { photo_url: string | null },
   );
-  // Prefer mitre portrait if available, otherwise fall back to general portrait
   const portraitSrc = tychikos?.photo_url ?? '/images/tychikos/portrait-mitre.jpg';
   const lang = locale as 'el' | 'ru' | 'en';
 
   return (
     <section className="relative bg-[var(--color-ink)] text-[var(--color-paper)] overflow-hidden">
-      <div className="grid grid-cols-1 md:grid-cols-12 min-h-[78vh] md:min-h-[82vh]">
-        {/* Photo — full bleed left */}
-        <div className="relative md:col-span-5 aspect-[4/5] md:aspect-auto bg-[var(--color-ink)]">
-          <Image
-            src={portraitSrc}
-            alt="Metropolitan Tychikos of Paphos"
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, 42vw"
-            className="object-cover object-left"
-          />
-          {/* Right edge fade into ink for seamless join */}
-          <div className="hidden md:block absolute inset-y-0 right-0 w-32 bg-gradient-to-r from-transparent to-[var(--color-ink)]" />
-          {/* Bottom fade on mobile */}
-          <div className="md:hidden absolute inset-x-0 bottom-0 h-24 bg-gradient-to-b from-transparent to-[var(--color-ink)]" />
-        </div>
+      {/* Full-bleed background image (only the left half is the actual portrait;
+          the right half is the source's red/maroon backdrop, which we let
+          continue under the text via a smooth horizontal gradient) */}
+      <div className="absolute inset-0">
+        <Image
+          src={portraitSrc}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[20%_center] md:object-[30%_center]"
+        />
+        {/* Subtle dark vignette across the whole image to lift contrast */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-black/30 to-[var(--color-ink)]" />
+        {/* Right-side darken to make text legible without covering the metropolitan */}
+        <div className="absolute inset-y-0 right-0 w-[58%] md:w-[55%] bg-gradient-to-l from-[var(--color-ink)] from-50% to-transparent" />
+        {/* Top fade to merge with header */}
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[var(--color-ink)]/95 to-transparent" />
+      </div>
 
-        {/* Quote + CTA */}
-        <div className="md:col-span-7 flex items-center px-6 md:px-12 lg:px-16 py-12 md:py-0">
+      {/* Content grid */}
+      <div className="relative grid grid-cols-1 md:grid-cols-12 min-h-[78vh] md:min-h-[85vh]">
+        {/* Left empty space — the portrait is the visual */}
+        <div className="hidden md:block md:col-span-5" />
+
+        {/* Right side text */}
+        <div className="md:col-span-7 flex items-center px-6 md:px-12 lg:px-16 pt-28 md:pt-0 pb-12 md:pb-0">
           <div className="max-w-2xl">
             <span className="kicker text-[var(--color-gold-bright)] mb-5 block">
               {locale === 'el'
@@ -56,13 +63,13 @@ export async function HeroSection({ locale }: { locale: string }) {
             </span>
 
             <blockquote
-              className="font-[family-name:var(--font-heading)] font-semibold leading-[1.2] tracking-tight mb-7 text-[var(--color-paper)]"
+              className="font-[family-name:var(--font-heading)] font-semibold leading-[1.18] tracking-tight mb-6 text-[var(--color-paper)]"
               style={{ fontSize: 'clamp(1.5rem, 2.6vw, 2.5rem)' }}
             >
               {QUOTES[lang]}
             </blockquote>
 
-            <p className="text-sm md:text-base text-[var(--color-paper)]/70 mb-9">
+            <p className="text-sm md:text-base text-[var(--color-paper)]/70 mb-8">
               — {ATTRIBUTIONS[lang]}
             </p>
 

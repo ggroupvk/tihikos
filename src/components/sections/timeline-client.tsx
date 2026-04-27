@@ -50,10 +50,10 @@ export function TimelineClient({
   const lang = locale as 'el' | 'ru' | 'en';
 
   return (
-    <section className="py-12 md:py-16 bg-[var(--color-paper)] border-t border-[var(--color-hairline)]">
+    <section className="py-10 md:py-12 bg-[var(--color-paper)]">
       <div className="mx-auto max-w-[var(--max-width-wide)] px-6 md:px-12">
         {/* Heading */}
-        <div className="text-center mb-10 md:mb-12">
+        <div className="text-center mb-8 md:mb-10">
           <span className="kicker text-[var(--color-burgundy)] block mb-2">{kicker}</span>
           <h2 className="font-[family-name:var(--font-heading)] font-bold text-[var(--color-ink)] text-2xl md:text-3xl tracking-tight">
             {title}
