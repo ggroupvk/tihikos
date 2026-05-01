@@ -89,7 +89,7 @@ export const timelineEvents = [
   },
   {
     id: '7',
-    event_date: '2025-10-20',
+    event_date: '2025-10-17',
     sort_order: 7,
     title_el: 'Η έφεση απορρίπτεται',
     title_ru: 'Апелляция отклонена',
@@ -203,7 +203,7 @@ export const videos = [
     category: 'sermons' as const,
     sort_order: 4,
     title_el: 'Η Αγία Θέκλα',
-    title_ru: 'Святая Фёкла',
+    title_ru: 'Святая Фекла',
     title_en: 'Saint Thekla',
     status: 'published' as const,
   },
