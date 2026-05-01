@@ -24,7 +24,7 @@ const LOCALES = [
 
 const BRAND_TEXT = {
   el: { top: 'Σε στήριξη του', bottom: 'Μητροπολίτη Πάφου', big: 'ΤΥΧΙΚΟΥ' },
-  ru: { top: 'В поддержку', bottom: 'митрополита Пафосского', big: 'ТИХИКОСА' },
+  ru: { top: 'В поддержку', bottom: 'митрополита Пафосского', big: 'ТИХИКА' },
   en: { top: 'In support of', bottom: 'Metropolitan of Paphos', big: 'TYCHIKOS' },
 } as const;
 

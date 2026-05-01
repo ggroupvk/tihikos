@@ -85,7 +85,7 @@ PDFs stored in Supabase Storage with public download URLs.
 ## RSS Parsing
 
 Sources:
-- `spzh.eu` — tag "Тихик/Тихикос"
+- `spzh.eu` — tag "Тихик"
 - `philenews.com` — search "Τυχικος"
 
 Parsed via API route triggered by Vercel Cron (every 30 min).

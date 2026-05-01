@@ -21,7 +21,7 @@ import { socialLinks } from '@/lib/mock/data';
 
 const BRAND = {
   el: { top: 'Σε στήριξη του', bottom: 'Μητροπολίτη Πάφου', big: 'ΤΥΧΙΚΟΥ' },
-  ru: { top: 'В поддержку', bottom: 'митрополита Пафосского', big: 'ТИХИКОСА' },
+  ru: { top: 'В поддержку', bottom: 'митрополита Пафосского', big: 'ТИХИКА' },
   en: { top: 'In support of', bottom: 'Metropolitan of Paphos', big: 'TYCHIKOS' },
 } as const;
 
@@ -172,7 +172,7 @@ export function Footer() {
           © {year} {locale === 'el'
             ? 'σε στήριξη του Μητροπολίτη Πάφου Τυχικού. Με επιφύλαξη παντός δικαιώματος.'
             : locale === 'ru'
-            ? 'В поддержку митрополита Пафосского Тихикоса. Все права защищены.'
+            ? 'В поддержку митрополита Пафосского Тихика. Все права защищены.'
             : 'In support of Metropolitan Tychikos of Paphos. All rights reserved.'}
         </div>
       </div>
