@@ -114,6 +114,9 @@ async function main() {
     excerpt_el: n.excerpt_el,
     excerpt_ru: n.excerpt_ru,
     excerpt_en: n.excerpt_en,
+    body_el: 'body_el' in n ? (n as { body_el?: string }).body_el : null,
+    body_ru: 'body_ru' in n ? (n as { body_ru?: string }).body_ru : null,
+    body_en: 'body_en' in n ? (n as { body_en?: string }).body_en : null,
     status: n.status,
   }));
   const { error: nErr, count: nCount } = await supabase

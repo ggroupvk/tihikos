@@ -23,6 +23,7 @@ import type { NewsRow } from '@/lib/queries/news';
 import type { TimelineRow } from '@/lib/queries/timeline';
 import type { DocumentRow } from '@/lib/queries/documents';
 import { getEnrichment } from '@/lib/data/timeline-enrichment';
+import { newsSourceLabel } from '@/lib/news-sources';
 
 const ICON_BY_ORDER: Record<number, LucideIcon> = {
   1: Building2,
@@ -136,28 +137,24 @@ export function NewsAndChronologyClient({
             <ul className="space-y-5">
               {news.map((item, idx) => {
                 const isLast = idx === news.length - 1;
-                const href = item.source_url ?? `/${locale}/news/${item.slug}`;
-                const isExternal = !!item.source_url;
                 return (
                   <li
                     key={item.id}
                     className={cn(!isLast && 'pb-5 border-b border-[var(--color-hairline)]')}
                   >
-                    <a
-                      href={href}
-                      target={isExternal ? '_blank' : undefined}
-                      rel={isExternal ? 'noopener noreferrer' : undefined}
+                    <Link
+                      href={`/${locale}/news/${item.slug}`}
                       className="group flex flex-col gap-1.5"
                     >
                       <div className="flex items-baseline gap-3">
                         <span className="kicker text-[var(--color-burgundy)] text-[10px]">
                           {formatDate(item.published_at, lang)}
                         </span>
-                        {item.source && (
+                        {newsSourceLabel(item.source, item.source_url) && (
                           <>
                             <span className="text-[var(--color-ink-muted)]/40">·</span>
                             <span className="text-[10px] uppercase tracking-[0.18em] text-[var(--color-ink-muted)]">
-                              {item.source}
+                              {newsSourceLabel(item.source, item.source_url)}
                             </span>
                           </>
                         )}
@@ -168,7 +165,7 @@ export function NewsAndChronologyClient({
                       <p className="text-sm text-[var(--color-ink-muted)] leading-relaxed line-clamp-2">
                         {localized(item, 'excerpt', lang)}
                       </p>
-                    </a>
+                    </Link>
                   </li>
                 );
               })}

@@ -3,7 +3,16 @@
 
 export type ContentStatus = 'draft' | 'published' | 'archived';
 export type UserRole = 'admin' | 'editor';
-export type ContentSource = 'manual' | 'rss_spzh' | 'rss_philenews';
+export type ContentSource =
+  | 'manual'
+  | 'rss_spzh'
+  | 'rss_philenews'
+  | 'rss_orthochristian'
+  | 'rss_orthodox_times'
+  | 'rss_orthodoxia_post'
+  | 'rss_ocp_society'
+  | 'rss_gorthodox'
+  | 'rss_cyprus_times';
 export type VideoCategory = 'case' | 'support' | 'sermons' | 'other';
 export type PositionTopic = 'ecumenism' | 'ukraine' | 'canonical_law';
 

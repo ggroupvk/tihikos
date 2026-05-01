@@ -1,6 +1,7 @@
-import { ExternalLink } from 'lucide-react';
+import Link from 'next/link';
 import { getNewsPaginated } from '@/lib/queries/news';
 import { localized } from '@/lib/utils';
+import { newsSourceLabel } from '@/lib/news-sources';
 
 const COPY = {
   el: {
@@ -44,26 +45,22 @@ export async function NewsListing({ locale }: { locale: string }) {
         <ol>
           {items.map((item, idx) => {
             const isLast = idx === items.length - 1;
-            const href = item.source_url ?? `/${locale}/news/${item.slug}`;
-            const isExternal = !!item.source_url;
             return (
               <li
                 key={item.id}
                 className={!isLast ? 'border-b border-[var(--color-hairline)]' : ''}
               >
-                <a
-                  href={href}
-                  target={isExternal ? '_blank' : undefined}
-                  rel={isExternal ? 'noopener noreferrer' : undefined}
+                <Link
+                  href={`/${locale}/news/${item.slug}`}
                   className="group grid grid-cols-12 gap-x-4 md:gap-x-8 py-6 md:py-7 hover:bg-[var(--color-paper-deep)]/40 px-3 -mx-3 transition-colors"
                 >
                   <div className="col-span-12 md:col-span-3 mb-3 md:mb-0">
                     <p className="kicker text-[var(--color-burgundy)] text-[10px]">
                       {formatDate(item.published_at, lang)}
                     </p>
-                    {item.source && (
+                    {newsSourceLabel(item.source, item.source_url) && (
                       <p className="mt-1.5 text-[10px] uppercase tracking-[0.18em] text-[var(--color-ink-muted)]">
-                        {item.source}
+                        {newsSourceLabel(item.source, item.source_url)}
                       </p>
                     )}
                   </div>
@@ -77,15 +74,8 @@ export async function NewsListing({ locale }: { locale: string }) {
                       </p>
                     )}
                     <div className="mt-3 flex items-center gap-1.5 text-xs text-[var(--color-burgundy)]">
-                      {isExternal && <ExternalLink size={11} />}
                       <span>
-                        {isExternal
-                          ? lang === 'ru'
-                            ? 'Источник'
-                            : lang === 'el'
-                            ? 'Πηγή'
-                            : 'Source'
-                          : lang === 'ru'
+                        {lang === 'ru'
                           ? 'Читать'
                           : lang === 'el'
                           ? 'Ανάγνωση'
@@ -96,7 +86,7 @@ export async function NewsListing({ locale }: { locale: string }) {
                       </span>
                     </div>
                   </div>
-                </a>
+                </Link>
               </li>
             );
           })}
