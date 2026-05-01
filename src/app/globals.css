@@ -91,3 +91,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* === Image rendering === */
 img { image-rendering: -webkit-optimize-contrast; }
+
+/* === Hide native scrollbar in horizontal scrollers === */
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { scrollbar-width: none; }
