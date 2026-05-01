@@ -1,18 +1,25 @@
-import { PageStub } from '@/components/ui/page-stub';
-import { getTranslations } from 'next-intl/server';
+import { PageHeader } from '@/components/sections/page-header';
+import { MediaVideos } from '@/components/sections/media-videos';
+import { MediaPhotos } from '@/components/sections/media-photos';
 
 const TEXT = {
   el: {
-    title: 'Μέσα και Έγγραφα',
-    subtitle: 'Πλήρες αρχείο βίντεο, φωτογραφιών και επίσημων εγγράφων.',
+    kicker: 'Μέσα',
+    title: 'Αρχείο μέσων',
+    subtitle:
+      'Πλήρες αρχείο βίντεο και φωτογραφιών, ομαδοποιημένο κατά κατηγορία.',
   },
   ru: {
-    title: 'Медиа и документы',
-    subtitle: 'Полный архив видео, фотографий и официальных документов.',
+    kicker: 'Медиа',
+    title: 'Медиа-архив',
+    subtitle:
+      'Полный архив видео и фотографий, сгруппированный по категориям.',
   },
   en: {
-    title: 'Media and Documents',
-    subtitle: 'Full archive of videos, photographs and official documents.',
+    kicker: 'Media',
+    title: 'Media archive',
+    subtitle:
+      'Full archive of videos and photographs, grouped by category.',
   },
 } as const;
 
@@ -22,10 +29,13 @@ export default async function MediaPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'nav' });
-  const copy = TEXT[locale as 'el' | 'ru' | 'en'];
+  const t = TEXT[locale as 'el' | 'ru' | 'en'];
 
   return (
-    <PageStub locale={locale} kicker={t('media')} title={copy.title} subtitle={copy.subtitle} />
+    <main>
+      <PageHeader kicker={t.kicker} title={t.title} subtitle={t.subtitle} />
+      <MediaVideos locale={locale} />
+      <MediaPhotos locale={locale} />
+    </main>
   );
 }
