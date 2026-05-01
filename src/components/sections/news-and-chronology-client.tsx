@@ -50,10 +50,10 @@ const COPY = {
   },
   ru: {
     newsLabel: 'Новости',
-    newsTitle: 'Последние сводки',
+    newsTitle: 'Последние новости',
     chronoLabel: 'Дело',
     chronoTitle: 'Хронология',
-    viewAllNews: 'Все сводки',
+    viewAllNews: 'Все новости',
     viewAllChrono: 'Полная хронология',
     documentsHeading: 'Связанные документы',
     expand: 'Подробнее',
