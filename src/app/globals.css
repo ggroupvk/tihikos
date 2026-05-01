@@ -1,9 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  /* === Archive palette === */
-  --color-paper: #EDE7D7;              /* parchment — main background */
-  --color-paper-deep: #E1DAC7;         /* deeper parchment — alt sections */
+  /* === Archive palette ===
+     Paper tones lifted toward NYT / NYer register: warm cream that
+     reads as "premium news stock", not parchment. Ink stays warm. */
+  --color-paper: #F7F3E8;              /* warm-cream news stock — main background */
+  --color-paper-deep: #ECE5D2;         /* deeper cream for alt sections */
   --color-ink: #141210;                /* warm near-black — printed ink */
   --color-ink-soft: #2A2724;           /* softer ink for body text */
   --color-ink-muted: #5C5752;          /* warm gray — secondary text */
@@ -12,8 +14,8 @@
   --color-gold: #B8935A;               /* muted manuscript gold — rare accent */
   --color-gold-bright: #C9A56A;        /* slightly brighter on dark */
   --color-stone: #8A827A;              /* warm stone gray */
-  --color-hairline: rgba(20, 18, 16, 0.12);       /* thin rules on paper */
-  --color-hairline-dark: rgba(237, 231, 215, 0.12); /* thin rules on ink */
+  --color-hairline: rgba(20, 18, 16, 0.10);       /* thin rules on paper */
+  --color-hairline-dark: rgba(247, 243, 232, 0.12); /* thin rules on ink */
 
   /* === Typography === */
   --font-heading: 'Noto Serif Display', serif;  /* premium multi-script display serif */
