@@ -34,13 +34,19 @@ const LOCAL_BY_SLUG = new Map(localNews.map((n) => [n.slug, n]));
 function mergeWithLocal(row: NewsRow): NewsRow {
   const local = LOCAL_BY_SLUG.get(row.slug);
   if (!local) return row;
-  type LocalBody = { body_el?: string; body_ru?: string; body_en?: string };
-  const lb = local as LocalBody;
+  type LocalEnrich = {
+    body_el?: string;
+    body_ru?: string;
+    body_en?: string;
+    image_url?: string;
+  };
+  const le = local as LocalEnrich;
   return {
     ...row,
-    body_el: row.body_el ?? lb.body_el ?? null,
-    body_ru: row.body_ru ?? lb.body_ru ?? null,
-    body_en: row.body_en ?? lb.body_en ?? null,
+    body_el: row.body_el ?? le.body_el ?? null,
+    body_ru: row.body_ru ?? le.body_ru ?? null,
+    body_en: row.body_en ?? le.body_en ?? null,
+    image_url: row.image_url ?? le.image_url ?? null,
   };
 }
 

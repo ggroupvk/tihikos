@@ -83,6 +83,23 @@ export default async function NewsArticlePage({
         </div>
       </div>
 
+      {/* Hero image — pulled from source */}
+      {article.image_url && (
+        <figure className="bg-[var(--color-ink)]">
+          <div className="mx-auto max-w-[var(--max-width-content)]">
+            <div className="relative aspect-[16/9] w-full overflow-hidden bg-[var(--color-ink)]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={article.image_url}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover"
+                loading="eager"
+              />
+            </div>
+          </div>
+        </figure>
+      )}
+
       {/* Article body */}
       <article className="bg-[var(--color-paper)] py-12 md:py-16">
         <div className="mx-auto max-w-[var(--max-width-text)] px-6 md:px-12">

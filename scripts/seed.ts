@@ -107,6 +107,7 @@ async function main() {
     slug: n.slug,
     source: n.source,
     source_url: n.source_url,
+    image_url: 'image_url' in n ? (n as { image_url?: string }).image_url : null,
     published_at: n.published_at,
     title_el: n.title_el,
     title_ru: n.title_ru,
