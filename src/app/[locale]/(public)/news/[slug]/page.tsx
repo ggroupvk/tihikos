@@ -4,14 +4,17 @@ import { ArrowLeft, ExternalLink } from 'lucide-react';
 import { getNewsBySlug, getLatestNews } from '@/lib/queries/news';
 import { localized } from '@/lib/utils';
 import { newsSourceLabel } from '@/lib/news-sources';
+import { ArticleBody } from '@/components/news/article-body';
+import { ArticleSidebar } from '@/components/news/article-sidebar';
+import { ShareRail } from '@/components/news/share-rail';
 
 const COPY = {
   el: {
-    backToNews: 'Σε όλα τα νέα',
+    backToNews: 'Σὲ ὅλα τὰ νέα',
     sourceLabel: 'Πηγή',
-    relatedHeading: 'Σχετικές αναφορές',
-    notFound: 'Το άρθρο δεν βρέθηκε.',
-    readOriginal: 'Διαβάστε στο πρωτότυπο',
+    relatedHeading: 'Σχετικὲς ἀναφορές',
+    notFound: 'Τὸ ἄρθρο δὲν βρέθηκε.',
+    readOriginal: 'Διαβάστε στὸ πρωτότυπο',
   },
   ru: {
     backToNews: 'Все новости',
@@ -38,6 +41,14 @@ function formatDate(iso: string | null, lang: 'el' | 'ru' | 'en'): string {
   });
 }
 
+function siteOrigin(): string {
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '');
+  }
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
+  return 'https://tihikos.vercel.app';
+}
+
 export default async function NewsArticlePage({
   params,
 }: {
@@ -54,6 +65,7 @@ export default async function NewsArticlePage({
   const body = localized(article, 'body', lang) || localized(article, 'excerpt', lang);
   const date = formatDate(article.published_at, lang);
   const source = newsSourceLabel(article.source, article.source_url);
+  const articleUrl = `${siteOrigin()}/${locale}/news/${slug}`;
 
   // Related — 3 most recent excluding current
   const latest = await getLatestNews(4);
@@ -61,7 +73,7 @@ export default async function NewsArticlePage({
 
   return (
     <main className="bg-[var(--color-paper)]">
-      {/* Top bar back-to-news */}
+      {/* Top bar back-to-news + masthead */}
       <div className="bg-[var(--color-ink)] text-[var(--color-paper)] border-b border-[var(--color-hairline-dark)] pt-28 md:pt-32 pb-8">
         <div className="mx-auto max-w-[var(--max-width-content)] px-6 md:px-12">
           <Link
@@ -100,42 +112,55 @@ export default async function NewsArticlePage({
         </figure>
       )}
 
-      {/* Article body */}
+      {/* Article grid: floating share rail + body + sidebar */}
       <article className="bg-[var(--color-paper)] py-12 md:py-16">
-        <div className="mx-auto max-w-[var(--max-width-text)] px-6 md:px-12">
-          <div className="prose prose-base md:prose-lg max-w-none font-[family-name:var(--font-body)] text-[var(--color-ink-soft)]">
-            {body
-              ?.split(/\n{2,}/)
-              .filter((p) => p.trim())
-              .map((para, i) => (
-                <p key={i} className="mb-5 leading-[1.72] text-[16px] md:text-[17px]">
-                  {para.trim()}
-                </p>
-              ))}
-          </div>
-
-          {/* Source attribution */}
-          {article.source_url && (
-            <div className="mt-12 pt-6 border-t border-[var(--color-hairline)]">
-              <p className="text-xs uppercase tracking-[0.18em] text-[var(--color-ink-muted)] mb-2">
-                {c.sourceLabel}
-              </p>
-              <a
-                href={article.source_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-baseline gap-2 text-[var(--color-burgundy)] hover:text-[var(--color-burgundy-bright)] transition-colors"
-              >
-                <span className="font-[family-name:var(--font-heading)] font-semibold text-base">
-                  {source || c.readOriginal}
-                </span>
-                <span className="text-xs text-[var(--color-ink-muted)] truncate max-w-md">
-                  {article.source_url}
-                </span>
-                <ExternalLink size={12} className="shrink-0 self-center" />
-              </a>
+        <div className="mx-auto max-w-[var(--max-width-content)] px-6 md:px-10 lg:px-12">
+          <div className="grid grid-cols-12 gap-x-6 lg:gap-x-10">
+            {/* Floating share rail (xl+) */}
+            <div className="hidden xl:block xl:col-span-1">
+              <ShareRail locale={locale} title={title} url={articleUrl} />
             </div>
-          )}
+
+            {/* Body */}
+            <div className="col-span-12 lg:col-span-8 xl:col-span-7">
+              <ArticleBody body={body} />
+
+              {/* Source attribution at the bottom of the article body */}
+              {article.source_url && (
+                <div className="mt-12 pt-6 border-t border-[var(--color-hairline)]">
+                  <p className="text-xs uppercase tracking-[0.18em] text-[var(--color-ink-muted)] mb-2">
+                    {c.sourceLabel}
+                  </p>
+                  <a
+                    href={article.source_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group inline-flex items-baseline gap-2 text-[var(--color-burgundy)] hover:text-[var(--color-burgundy-bright)] transition-colors flex-wrap"
+                  >
+                    <span className="font-[family-name:var(--font-heading)] font-semibold text-base">
+                      {source || c.readOriginal}
+                    </span>
+                    <span className="text-xs text-[var(--color-ink-muted)] truncate max-w-md">
+                      {article.source_url}
+                    </span>
+                    <ExternalLink size={12} className="shrink-0 self-center" />
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {/* Right sidebar (lg+) */}
+            <div className="hidden lg:block lg:col-span-4 xl:col-span-3 xl:col-start-9">
+              <ArticleSidebar
+                locale={locale}
+                sourceLabel={source || null}
+                publishedAt={article.published_at}
+                body={body}
+                title={title}
+                url={articleUrl}
+              />
+            </div>
+          </div>
         </div>
       </article>
 
