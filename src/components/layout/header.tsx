@@ -24,7 +24,7 @@ const LOCALES = [
 
 const BRAND_TEXT = {
   el: { top: 'Σε στήριξη του', bottom: 'Μητροπολίτη Πάφου', big: 'ΤΥΧΙΚΟΥ' },
-  ru: { top: 'В поддержку', bottom: 'митрополита Пафосского', big: 'ТИХИКОСА' },
+  ru: { top: 'В поддержку', bottom: 'митрополита Пафосского', big: 'ТИХИКА' },
   en: { top: 'In support of', bottom: 'Metropolitan of Paphos', big: 'TYCHIKOS' },
 } as const;
 
@@ -80,7 +80,7 @@ export function Header() {
                 <line x1="16" y1="3" x2="16" y2="45" />
                 <line x1="11" y1="9" x2="21" y2="9" />
                 <line x1="5" y1="17" x2="27" y2="17" />
-                <line x1="9" y1="32" x2="23" y2="26" />
+                <line x1="9" y1="26" x2="23" y2="32" />
               </svg>
             </span>
 

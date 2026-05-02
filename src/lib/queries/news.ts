@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server';
 import type { ContentSource, ContentStatus } from '@/types/database';
+import { news as localNews } from '@/lib/mock/data';
 
 export type NewsRow = {
   id: string;
@@ -22,6 +23,33 @@ export type NewsRow = {
 
 const PAGE_SIZE = 10;
 
+/**
+ * Until Supabase is reseeded with `body_el/ru/en` content, overlay
+ * locally-curated bodies (and missing entries) from `data.ts` so the
+ * detail pages have substance. Removable once `npm run db:seed` runs
+ * with the full dataset and the DB has all 20 articles.
+ */
+const LOCAL_BY_SLUG = new Map(localNews.map((n) => [n.slug, n]));
+
+function mergeWithLocal(row: NewsRow): NewsRow {
+  const local = LOCAL_BY_SLUG.get(row.slug);
+  if (!local) return row;
+  type LocalEnrich = {
+    body_el?: string;
+    body_ru?: string;
+    body_en?: string;
+    image_url?: string;
+  };
+  const le = local as LocalEnrich;
+  return {
+    ...row,
+    body_el: row.body_el ?? le.body_el ?? null,
+    body_ru: row.body_ru ?? le.body_ru ?? null,
+    body_en: row.body_en ?? le.body_en ?? null,
+    image_url: row.image_url ?? le.image_url ?? null,
+  };
+}
+
 export async function getLatestNews(limit = 3): Promise<NewsRow[]> {
   const supabase = await createClient();
 
@@ -33,7 +61,7 @@ export async function getLatestNews(limit = 3): Promise<NewsRow[]> {
     .limit(limit);
 
   if (error) throw error;
-  return (data ?? []) as NewsRow[];
+  return ((data ?? []) as NewsRow[]).map(mergeWithLocal);
 }
 
 export async function getNewsPaginated(page = 1) {
@@ -50,7 +78,7 @@ export async function getNewsPaginated(page = 1) {
 
   if (error) throw error;
   return {
-    items: (data ?? []) as NewsRow[],
+    items: ((data ?? []) as NewsRow[]).map(mergeWithLocal),
     total: count ?? 0,
     page,
     totalPages: Math.ceil((count ?? 0) / PAGE_SIZE),
@@ -68,5 +96,5 @@ export async function getNewsBySlug(slug: string): Promise<NewsRow> {
     .single();
 
   if (error) throw error;
-  return data as NewsRow;
+  return mergeWithLocal(data as NewsRow);
 }

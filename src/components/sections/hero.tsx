@@ -12,7 +12,7 @@ const QUOTES = {
 
 const ATTRIBUTIONS = {
   el: 'Μητροπολίτης Πάφου Τυχικός',
-  ru: 'Митрополит Пафосский Тихикос',
+  ru: 'Митрополит Пафосский Тихик',
   en: 'Metropolitan Tychikos of Paphos',
 } as const;
 

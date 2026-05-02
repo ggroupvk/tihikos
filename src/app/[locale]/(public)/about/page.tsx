@@ -1,18 +1,25 @@
-import { PageStub } from '@/components/ui/page-stub';
-import { getTranslations } from 'next-intl/server';
+import { PageHeader } from '@/components/sections/page-header';
+import { AboutBio } from '@/components/sections/about-bio';
+import { AboutPhotos } from '@/components/sections/about-photos';
+import { AboutSermons } from '@/components/sections/about-sermons';
 
 const TEXT = {
   el: {
-    title: 'Ο Μητροπολίτης Τυχικός',
-    subtitle: 'Βιογραφία κατά περιόδους ζωής και διακονίας, φωτογραφικό αρχείο και κηρύγματα.',
+    kicker: 'Πορτρέτο',
+    title: 'Ο Μητροπολίτης Πάφου Τυχικός',
+    subtitle:
+      'Βιογραφία κατά περιόδους ζωής και διακονίας, φωτογραφικό αρχείο και κηρύγματα.',
   },
   ru: {
-    title: 'Митрополит Тихикос',
+    kicker: 'Портрет',
+    title: 'Митрополит Пафосский Тихик',
     subtitle: 'Биография по периодам жизни и служения, фотоархив и проповеди.',
   },
   en: {
-    title: 'Metropolitan Tychikos',
-    subtitle: 'Biography by life and ministry periods, photo archive and homilies.',
+    kicker: 'Portrait',
+    title: 'Metropolitan Tychikos of Paphos',
+    subtitle:
+      'Biography by life and ministry periods, photo archive and homilies.',
   },
 } as const;
 
@@ -22,11 +29,14 @@ export default async function AboutPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'nav' });
-  const lang = locale as 'el' | 'ru' | 'en';
-  const copy = TEXT[lang];
+  const t = TEXT[locale as 'el' | 'ru' | 'en'];
 
   return (
-    <PageStub locale={locale} kicker={t('about')} title={copy.title} subtitle={copy.subtitle} />
+    <main>
+      <PageHeader kicker={t.kicker} title={t.title} subtitle={t.subtitle} />
+      <AboutBio locale={locale} />
+      <AboutPhotos locale={locale} />
+      <AboutSermons locale={locale} />
+    </main>
   );
 }

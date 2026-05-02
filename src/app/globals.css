@@ -1,9 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  /* === Archive palette === */
-  --color-paper: #EDE7D7;              /* parchment — main background */
-  --color-paper-deep: #E1DAC7;         /* deeper parchment — alt sections */
+  /* === Archive palette ===
+     Paper tones lifted toward NYT / NYer register: warm cream that
+     reads as "premium news stock", not parchment. Ink stays warm. */
+  --color-paper: #F7F3E8;              /* warm-cream news stock — main background */
+  --color-paper-deep: #ECE5D2;         /* deeper cream for alt sections */
   --color-ink: #141210;                /* warm near-black — printed ink */
   --color-ink-soft: #2A2724;           /* softer ink for body text */
   --color-ink-muted: #5C5752;          /* warm gray — secondary text */
@@ -12,8 +14,8 @@
   --color-gold: #B8935A;               /* muted manuscript gold — rare accent */
   --color-gold-bright: #C9A56A;        /* slightly brighter on dark */
   --color-stone: #8A827A;              /* warm stone gray */
-  --color-hairline: rgba(20, 18, 16, 0.12);       /* thin rules on paper */
-  --color-hairline-dark: rgba(237, 231, 215, 0.12); /* thin rules on ink */
+  --color-hairline: rgba(20, 18, 16, 0.10);       /* thin rules on paper */
+  --color-hairline-dark: rgba(247, 243, 232, 0.12); /* thin rules on ink */
 
   /* === Typography === */
   --font-heading: 'Noto Serif Display', serif;  /* premium multi-script display serif */
@@ -76,6 +78,64 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 500;
 }
 
+/* === Article (long-form news) typography === */
+.article-body {
+  font-family: var(--font-body);
+  color: var(--color-ink-soft);
+  font-size: 17px;
+  line-height: 1.72;
+}
+.article-body p {
+  margin-bottom: 1.4em;
+}
+/* Lead paragraph — first ¶, slightly larger */
+.article-body .lead {
+  font-size: 19px;
+  line-height: 1.62;
+}
+/* Drop cap on first letter of lead */
+.article-body .lead::first-letter {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 4.4em;
+  line-height: 0.85;
+  float: left;
+  margin: 0.06em 0.10em -0.05em 0;
+  color: var(--color-burgundy);
+}
+/* H2 subheading detected from text */
+.article-body h2.subhead {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.55rem;
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+  margin: 2.6em 0 1em;
+  padding-top: 1.2em;
+  border-top: 1px solid var(--color-hairline);
+  line-height: 1.18;
+}
+/* Pull-quote — for citations and quoted blocks */
+.article-body blockquote.pullquote {
+  border-left: 2px solid var(--color-burgundy);
+  padding: 0.2em 0 0.2em 1.2em;
+  margin: 1.6em 0;
+  font-style: italic;
+  font-family: var(--font-heading);
+  font-size: 1.18rem;
+  line-height: 1.45;
+  color: var(--color-ink);
+}
+/* Section ornament — placed before some subheadings */
+.article-body .ornament {
+  margin: 2.4em 0 1.6em;
+  text-align: center;
+  color: var(--color-burgundy);
+  letter-spacing: 0.6em;
+  font-size: 0.9rem;
+  user-select: none;
+}
+
 /* === Subtle reveal on scroll (CSS only via scroll-driven animation) === */
 @supports (animation-timeline: view()) {
   .reveal {
@@ -91,3 +151,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* === Image rendering === */
 img { image-rendering: -webkit-optimize-contrast; }
+
+/* === Hide native scrollbar in horizontal scrollers === */
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { scrollbar-width: none; }

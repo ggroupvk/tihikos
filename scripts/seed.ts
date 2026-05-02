@@ -107,6 +107,7 @@ async function main() {
     slug: n.slug,
     source: n.source,
     source_url: n.source_url,
+    image_url: 'image_url' in n ? (n as { image_url?: string }).image_url : null,
     published_at: n.published_at,
     title_el: n.title_el,
     title_ru: n.title_ru,
@@ -114,6 +115,9 @@ async function main() {
     excerpt_el: n.excerpt_el,
     excerpt_ru: n.excerpt_ru,
     excerpt_en: n.excerpt_en,
+    body_el: 'body_el' in n ? (n as { body_el?: string }).body_el : null,
+    body_ru: 'body_ru' in n ? (n as { body_ru?: string }).body_ru : null,
+    body_en: 'body_en' in n ? (n as { body_en?: string }).body_en : null,
     status: n.status,
   }));
   const { error: nErr, count: nCount } = await supabase

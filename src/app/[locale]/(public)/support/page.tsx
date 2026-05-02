@@ -1,18 +1,26 @@
-import { PageStub } from '@/components/ui/page-stub';
-import { getTranslations } from 'next-intl/server';
+import { PageHeader } from '@/components/sections/page-header';
+import { SupportVoices } from '@/components/sections/support-voices';
+import { SupportPetition } from '@/components/sections/support-petition';
+import { SupportNewsletter } from '@/components/sections/support-newsletter';
 
 const TEXT = {
   el: {
-    title: 'Στήριξη του Μητροπολίτη',
-    subtitle: 'Φωνές κληρικών, δηλώσεις ειδικών και φόρμα γραμμάτων στήριξης.',
+    kicker: 'Στήριξη',
+    title: 'Σταθείτε δίπλα στον Μητροπολίτη',
+    subtitle:
+      'Φωνές κληρικών, υπογραφή έκκλησης, εγγραφή σε ενημερώσεις. Καμία οικονομική απαίτηση — μόνο φωνή και προσευχή.',
   },
   ru: {
-    title: 'Поддержка митрополита',
-    subtitle: 'Голоса клириков, заявления специалистов и форма писем поддержки.',
+    kicker: 'Поддержка',
+    title: 'Встаньте рядом с митрополитом',
+    subtitle:
+      'Голоса клириков, подпись под обращением, подписка на сводки. Никаких финансовых требований — только голос и молитва.',
   },
   en: {
-    title: 'Support the Metropolitan',
-    subtitle: 'Clergy voices, specialist statements and letters of support form.',
+    kicker: 'Support',
+    title: 'Stand alongside the Metropolitan',
+    subtitle:
+      'Clergy voices, sign the appeal, subscribe to briefings. No financial demands — only voice and prayer.',
   },
 } as const;
 
@@ -22,10 +30,14 @@ export default async function SupportPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'nav' });
-  const copy = TEXT[locale as 'el' | 'ru' | 'en'];
+  const t = TEXT[locale as 'el' | 'ru' | 'en'];
 
   return (
-    <PageStub locale={locale} kicker={t('support')} title={copy.title} subtitle={copy.subtitle} />
+    <main>
+      <PageHeader kicker={t.kicker} title={t.title} subtitle={t.subtitle} />
+      <SupportVoices locale={locale} />
+      <SupportPetition locale={locale} />
+      <SupportNewsletter locale={locale} />
+    </main>
   );
 }

@@ -1,18 +1,24 @@
-import { PageStub } from '@/components/ui/page-stub';
-import { getTranslations } from 'next-intl/server';
+import { PageHeader } from '@/components/sections/page-header';
+import { NewsListing } from '@/components/sections/news-listing';
 
 const TEXT = {
   el: {
-    title: 'Νέα και Δηλώσεις',
-    subtitle: 'Επίσημες δηλώσεις, αναφορές μέσων και αναλυτικά άρθρα.',
+    kicker: 'Νέα',
+    title: 'Νέα και δηλώσεις',
+    subtitle:
+      'Επίσημες δηλώσεις του Μητροπολίτη, δημοσιεύματα του διεθνούς τύπου, αναλυτικά άρθρα.',
   },
   ru: {
+    kicker: 'Новости',
     title: 'Новости и заявления',
-    subtitle: 'Официальные заявления, обзоры СМИ и аналитические статьи.',
+    subtitle:
+      'Официальные заявления митрополита, публикации международной прессы, аналитические статьи.',
   },
   en: {
-    title: 'News and Statements',
-    subtitle: 'Official statements, media coverage and analytical articles.',
+    kicker: 'News',
+    title: 'News and statements',
+    subtitle:
+      'Official statements of the Metropolitan, international press coverage, analytical articles.',
   },
 } as const;
 
@@ -22,10 +28,12 @@ export default async function NewsPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'nav' });
-  const copy = TEXT[locale as 'el' | 'ru' | 'en'];
+  const t = TEXT[locale as 'el' | 'ru' | 'en'];
 
   return (
-    <PageStub locale={locale} kicker={t('news')} title={copy.title} subtitle={copy.subtitle} />
+    <main>
+      <PageHeader kicker={t.kicker} title={t.title} subtitle={t.subtitle} />
+      <NewsListing locale={locale} />
+    </main>
   );
 }
