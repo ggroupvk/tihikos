@@ -22,10 +22,34 @@ const LOCALES = [
   { code: 'en', label: 'EN' },
 ] as const;
 
+// Russian and Greek inflect the surname after the genitive phrase
+// «В поддержку митрополита Пафосского ___» / «Σὲ στήριξη τοῦ
+// Μητροπολίτη Πάφου ___», so the big wordmark needs both forms:
+//   - bigGen — used when the two-line kicker above is visible
+//     (continues the genitive phrase), e.g. ТИХИКА / ΤΥΧΙΚΟΥ
+//   - bigNom — used when the kicker is hidden on tight viewports
+//     and the wordmark must read as a standalone name in nominative,
+//     e.g. ТИХИК / ΤΥΧΙΚΟΣ
+// English isn't case-inflected so the same word works in both contexts.
 const BRAND_TEXT = {
-  el: { top: 'Σε στήριξη του', bottom: 'Μητροπολίτη Πάφου', big: 'ΤΥΧΙΚΟΥ' },
-  ru: { top: 'В поддержку', bottom: 'митрополита Пафосского', big: 'ТИХИКА' },
-  en: { top: 'In support of', bottom: 'Metropolitan of Paphos', big: 'TYCHIKOS' },
+  el: {
+    top: 'Σε στήριξη του',
+    bottom: 'Μητροπολίτη Πάφου',
+    bigGen: 'ΤΥΧΙΚΟΥ',
+    bigNom: 'ΤΥΧΙΚΟΣ',
+  },
+  ru: {
+    top: 'В поддержку',
+    bottom: 'митрополита Пафосского',
+    bigGen: 'ТИХИКА',
+    bigNom: 'ТИХИК',
+  },
+  en: {
+    top: 'In support of',
+    bottom: 'Metropolitan of Paphos',
+    bigGen: 'TYCHIKOS',
+    bigNom: 'TYCHIKOS',
+  },
 } as const;
 
 const MENU_LABEL = {
@@ -116,9 +140,11 @@ export function Header() {
                 <span className="hidden sm:block text-[10px] md:text-[11px] tracking-[0.18em] uppercase text-[var(--color-paper)]/70 truncate">
                   {brand.bottom}
                 </span>
-                {/* Big name — always shown */}
+                {/* Big wordmark — nominative under sm (no kicker above),
+                    genitive sm+ where it continues the kicker phrase. */}
                 <span className="font-[family-name:var(--font-display)] text-[15px] sm:text-base md:text-lg tracking-[0.18em] sm:tracking-[0.22em] text-[var(--color-gold-bright)] sm:mt-0.5 truncate">
-                  {brand.big}
+                  <span className="sm:hidden">{brand.bigNom}</span>
+                  <span className="hidden sm:inline">{brand.bigGen}</span>
                 </span>
               </span>
             </Link>
