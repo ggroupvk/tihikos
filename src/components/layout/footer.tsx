@@ -49,26 +49,20 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-4">
             <Link href={localizedHref('/')} className="inline-flex items-center gap-3 group">
-              <span
+              <svg
+                viewBox="0 0 32 48"
+                className="w-7 h-10 text-[var(--color-gold-bright)] shrink-0"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="square"
                 aria-hidden
-                className="relative w-12 h-12 rounded-full border border-[var(--color-gold)]/70 flex items-center justify-center bg-transparent shrink-0"
               >
-                <span className="absolute inset-[3px] rounded-full border border-[var(--color-gold)]/30" />
-                <svg
-                  viewBox="0 0 32 48"
-                  className="w-5 h-7 text-[var(--color-gold-bright)]"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="square"
-                  aria-hidden
-                >
-                  <line x1="16" y1="3" x2="16" y2="45" />
-                  <line x1="11" y1="9" x2="21" y2="9" />
-                  <line x1="5" y1="17" x2="27" y2="17" />
-                  <line x1="9" y1="26" x2="23" y2="32" />
-                </svg>
-              </span>
+                <line x1="16" y1="3" x2="16" y2="45" />
+                <line x1="11" y1="9" x2="21" y2="9" />
+                <line x1="5" y1="17" x2="27" y2="17" />
+                <line x1="9" y1="26" x2="23" y2="32" />
+              </svg>
               <span className="flex flex-col leading-tight">
                 <span className="text-[10px] tracking-[0.18em] uppercase text-[var(--color-paper)]/70">
                   {brand.top}
@@ -120,7 +114,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="YouTube"
-                  className="w-9 h-9 border border-[var(--color-paper)]/20 flex items-center justify-center text-[var(--color-paper)]/70 hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] transition-colors"
+                  className="inline-flex items-center justify-center w-11 h-11 border border-[var(--color-paper)]/20 text-[var(--color-paper)]/70 hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] transition-colors"
                 >
                   <YoutubeIcon size={16} />
                 </a>
@@ -131,7 +125,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Telegram"
-                  className="w-9 h-9 border border-[var(--color-paper)]/20 flex items-center justify-center text-[var(--color-paper)]/70 hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] transition-colors"
+                  className="inline-flex items-center justify-center w-11 h-11 border border-[var(--color-paper)]/20 text-[var(--color-paper)]/70 hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] transition-colors"
                 >
                   <Send size={16} />
                 </a>
@@ -142,7 +136,7 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"
-                  className="w-9 h-9 border border-[var(--color-paper)]/20 flex items-center justify-center text-[var(--color-paper)]/70 hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] transition-colors"
+                  className="inline-flex items-center justify-center w-11 h-11 border border-[var(--color-paper)]/20 text-[var(--color-paper)]/70 hover:border-[var(--color-gold-bright)] hover:text-[var(--color-gold-bright)] transition-colors"
                 >
                   <FacebookIcon size={16} />
                 </a>

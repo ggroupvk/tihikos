@@ -193,7 +193,7 @@ export function CaseChronologyClient({
                   )}
                 >
                   <div className="overflow-hidden">
-                    <div className="pl-[84px] pr-3 pb-6">
+                    <div className="pl-2 sm:pl-[84px] pr-3 pb-6">
                       {shortDesc && (
                         <p className="text-sm text-[var(--color-ink-soft)] leading-relaxed mb-3 italic">
                           {shortDesc}

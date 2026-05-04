@@ -267,7 +267,7 @@ export function NewsAndChronologyClient({
                       )}
                     >
                       <div className="overflow-hidden">
-                        <div className="pl-[72px] pr-2 pb-5 -mt-1">
+                        <div className="pl-2 sm:pl-[72px] pr-2 pb-5 -mt-1">
                           {shortDesc && (
                             <p className="text-sm text-[var(--color-ink-soft)] leading-relaxed mb-3 italic">
                               {shortDesc}
