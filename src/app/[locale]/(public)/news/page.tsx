@@ -1,5 +1,8 @@
+import type { Metadata } from 'next';
 import { PageHeader } from '@/components/sections/page-header';
 import { NewsListing } from '@/components/sections/news-listing';
+import { buildPageMetadata } from '@/lib/seo';
+import type { SiteLocale } from '@/lib/site';
 
 const TEXT = {
   el: {
@@ -21,6 +24,21 @@ const TEXT = {
       'Official statements of the Metropolitan, international press coverage, analytical articles.',
   },
 } as const;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = TEXT[locale as SiteLocale];
+  return buildPageMetadata({
+    locale: locale as SiteLocale,
+    path: '/news',
+    title: t.title,
+    description: t.subtitle,
+  });
+}
 
 export default async function NewsPage({
   params,

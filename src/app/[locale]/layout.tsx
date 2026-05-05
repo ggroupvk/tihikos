@@ -7,6 +7,13 @@ import { notFound } from 'next/navigation';
 import { Cinzel, Inter, Noto_Serif_Display } from 'next/font/google';
 import { routing } from '@/i18n/routing';
 import { ScrollProgress } from '@/components/ui/scroll-progress';
+import {
+  alternateUrls,
+  canonicalUrl,
+  ogLocale,
+  type SiteLocale,
+} from '@/lib/site';
+import { organizationSchema, websiteSchema } from '@/lib/seo';
 import '../globals.css';
 
 const notoSerifDisplay = Noto_Serif_Display({
@@ -37,6 +44,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'meta' });
+  const lang = locale as SiteLocale;
 
   return {
     title: {
@@ -46,13 +54,26 @@ export async function generateMetadata({
     description: t('siteDescription'),
     metadataBase: new URL('https://tihikos.com'),
     alternates: {
-      canonical: `/${locale}`,
-      languages: { el: '/el', ru: '/ru', en: '/en' },
+      canonical: canonicalUrl(lang, '/'),
+      languages: alternateUrls('/'),
     },
     openGraph: {
       type: 'website',
-      locale: locale === 'el' ? 'el_GR' : locale === 'ru' ? 'ru_RU' : 'en_US',
+      locale: ogLocale(lang),
       siteName: t('siteTitle'),
+      url: canonicalUrl(lang, '/'),
+      title: t('siteTitle'),
+      description: t('siteDescription'),
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('siteTitle'),
+      description: t('siteDescription'),
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
     },
   };
 }
@@ -76,8 +97,24 @@ export default async function LocaleLayout({
 
   const messages = await getMessages();
 
+  const lang = locale as SiteLocale;
+
   return (
     <html lang={locale} dir="ltr">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema()),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteSchema(lang)),
+          }}
+        />
+      </head>
       <body className={`${notoSerifDisplay.variable} ${cinzel.variable} ${inter.variable}`}>
         <ScrollProgress />
         <NextIntlClientProvider messages={messages}>

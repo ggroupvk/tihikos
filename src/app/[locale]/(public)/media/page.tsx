@@ -1,6 +1,9 @@
+import type { Metadata } from 'next';
 import { PageHeader } from '@/components/sections/page-header';
 import { MediaVideos } from '@/components/sections/media-videos';
 import { MediaPhotos } from '@/components/sections/media-photos';
+import { buildPageMetadata } from '@/lib/seo';
+import type { SiteLocale } from '@/lib/site';
 
 const TEXT = {
   el: {
@@ -22,6 +25,21 @@ const TEXT = {
       'Full archive of videos and photographs, grouped by category.',
   },
 } as const;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = TEXT[locale as SiteLocale];
+  return buildPageMetadata({
+    locale: locale as SiteLocale,
+    path: '/media',
+    title: t.title,
+    description: t.subtitle,
+  });
+}
 
 export default async function MediaPage({
   params,

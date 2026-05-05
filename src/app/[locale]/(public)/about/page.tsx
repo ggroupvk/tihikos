@@ -1,7 +1,10 @@
+import type { Metadata } from 'next';
 import { PageHeader } from '@/components/sections/page-header';
 import { AboutBio } from '@/components/sections/about-bio';
 import { AboutPhotos } from '@/components/sections/about-photos';
 import { AboutSermons } from '@/components/sections/about-sermons';
+import { buildPageMetadata } from '@/lib/seo';
+import type { SiteLocale } from '@/lib/site';
 
 const TEXT = {
   el: {
@@ -22,6 +25,21 @@ const TEXT = {
       'Biography by life and ministry periods, photo archive and homilies.',
   },
 } as const;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = TEXT[locale as SiteLocale];
+  return buildPageMetadata({
+    locale: locale as SiteLocale,
+    path: '/about',
+    title: t.title,
+    description: t.subtitle,
+  });
+}
 
 export default async function AboutPage({
   params,

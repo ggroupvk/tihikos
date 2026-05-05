@@ -1,7 +1,10 @@
+import type { Metadata } from 'next';
 import { PageHeader } from '@/components/sections/page-header';
 import { SupportVoices } from '@/components/sections/support-voices';
 import { SupportPetition } from '@/components/sections/support-petition';
 import { SupportNewsletter } from '@/components/sections/support-newsletter';
+import { buildPageMetadata } from '@/lib/seo';
+import type { SiteLocale } from '@/lib/site';
 
 const TEXT = {
   el: {
@@ -23,6 +26,21 @@ const TEXT = {
       'Clergy voices, sign the appeal, subscribe to briefings. No financial demands — only voice and prayer.',
   },
 } as const;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = TEXT[locale as SiteLocale];
+  return buildPageMetadata({
+    locale: locale as SiteLocale,
+    path: '/support',
+    title: t.title,
+    description: t.subtitle,
+  });
+}
 
 export default async function SupportPage({
   params,

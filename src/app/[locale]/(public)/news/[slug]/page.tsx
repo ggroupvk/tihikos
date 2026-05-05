@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
@@ -7,6 +8,8 @@ import { newsSourceLabel } from '@/lib/news-sources';
 import { ArticleBody } from '@/components/news/article-body';
 import { ArticleSidebar } from '@/components/news/article-sidebar';
 import { ShareRail } from '@/components/news/share-rail';
+import { buildPageMetadata, newsArticleSchema, breadcrumbSchema } from '@/lib/seo';
+import { canonicalUrl, type SiteLocale } from '@/lib/site';
 
 const COPY = {
   el: {
@@ -41,12 +44,29 @@ function formatDate(iso: string | null, lang: 'el' | 'ru' | 'en'): string {
   });
 }
 
-function siteOrigin(): string {
-  if (process.env.NEXT_PUBLIC_SITE_URL) {
-    return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, '');
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
+  const { locale, slug } = await params;
+  const lang = locale as SiteLocale;
+  const article = await getNewsBySlug(slug).catch(() => null);
+  if (!article) {
+    return { title: COPY[lang].notFound };
   }
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  return 'https://tihikos.vercel.app';
+  return buildPageMetadata({
+    locale: lang,
+    path: `/news/${slug}`,
+    title: localized(article, 'title', lang),
+    description:
+      localized(article, 'excerpt', lang) ||
+      localized(article, 'title', lang),
+    image: article.image_url ?? null,
+    type: 'article',
+    publishedTime: article.published_at,
+    authors: article.source ? [String(article.source)] : undefined,
+  });
 }
 
 export default async function NewsArticlePage({
@@ -65,7 +85,23 @@ export default async function NewsArticlePage({
   const body = localized(article, 'body', lang) || localized(article, 'excerpt', lang);
   const date = formatDate(article.published_at, lang);
   const source = newsSourceLabel(article.source, article.source_url);
-  const articleUrl = `${siteOrigin()}/${locale}/news/${slug}`;
+  const articleUrl = canonicalUrl(lang as SiteLocale, `/news/${slug}`);
+
+  // Structured data: NewsArticle + breadcrumb trail
+  const newsLd = newsArticleSchema({
+    locale: lang as SiteLocale,
+    slug,
+    title,
+    description: localized(article, 'excerpt', lang) || title,
+    image: article.image_url,
+    publishedAt: article.published_at,
+    sourceName: source || null,
+    sourceUrl: article.source_url,
+  });
+  const crumbLd = breadcrumbSchema(lang as SiteLocale, [
+    { name: c.backToNews, path: '/news' },
+    { name: title, path: `/news/${slug}` },
+  ]);
 
   // Related — 3 most recent excluding current
   const latest = await getLatestNews(4);
@@ -73,6 +109,14 @@ export default async function NewsArticlePage({
 
   return (
     <main className="bg-[var(--color-paper)]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(newsLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(crumbLd) }}
+      />
       {/* Top bar back-to-news + masthead */}
       <div className="bg-[var(--color-ink)] text-[var(--color-paper)] border-b border-[var(--color-hairline-dark)] pt-28 md:pt-32 pb-8">
         <div className="mx-auto max-w-[var(--max-width-content)] px-6 md:px-12">

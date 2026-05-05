@@ -1,7 +1,10 @@
+import type { Metadata } from 'next';
 import { PageHeader } from '@/components/sections/page-header';
 import { CaseChronology } from '@/components/sections/case-chronology';
 import { CaseDocuments } from '@/components/sections/case-documents';
 import { CaseAnalysis } from '@/components/sections/case-analysis';
+import { buildPageMetadata } from '@/lib/seo';
+import type { SiteLocale } from '@/lib/site';
 
 const TEXT = {
   el: {
@@ -23,6 +26,21 @@ const TEXT = {
       'Full chronology, official documents from the Holy Synod and the Phanar, canonical commentary and sources.',
   },
 } as const;
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = TEXT[locale as SiteLocale];
+  return buildPageMetadata({
+    locale: locale as SiteLocale,
+    path: '/case',
+    title: t.title,
+    description: t.subtitle,
+  });
+}
 
 export default async function CasePage({
   params,
