@@ -162,12 +162,28 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-6 border-t border-[var(--color-hairline-dark)] text-center text-xs text-[var(--color-paper)]/50">
-          © {year} {locale === 'el'
-            ? 'σε στήριξη του Μητροπολίτη Πάφου Τυχικού. Με επιφύλαξη παντός δικαιώματος.'
-            : locale === 'ru'
-            ? 'В поддержку митрополита Пафосского Тихика. Все права защищены.'
-            : 'In support of Metropolitan Tychikos of Paphos. All rights reserved.'}
+        <div className="mt-12 pt-6 border-t border-[var(--color-hairline-dark)] flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-[var(--color-paper)]/50">
+          <p className="text-center md:text-left">
+            © {year} {locale === 'el'
+              ? 'σε στήριξη του Μητροπολίτη Πάφου Τυχικού. Με επιφύλαξη παντός δικαιώματος.'
+              : locale === 'ru'
+              ? 'В поддержку митрополита Пафосского Тихика. Все права защищены.'
+              : 'In support of Metropolitan Tychikos of Paphos. All rights reserved.'}
+          </p>
+          <nav className="flex items-center gap-6">
+            <Link
+              href={localizedHref('/privacy')}
+              className="hover:text-[var(--color-gold-bright)] transition-colors"
+            >
+              {locale === 'el' ? 'Ἀπόρρητο' : locale === 'ru' ? 'Конфиденциальность' : 'Privacy'}
+            </Link>
+            <Link
+              href={localizedHref('/terms')}
+              className="hover:text-[var(--color-gold-bright)] transition-colors"
+            >
+              {locale === 'el' ? 'Ὅροι χρήσης' : locale === 'ru' ? 'Условия' : 'Terms'}
+            </Link>
+          </nav>
         </div>
       </div>
     </footer>
