@@ -23,32 +23,24 @@ const LOCALES = [
 ] as const;
 
 // Russian and Greek inflect the surname after the genitive phrase
-// «В поддержку митрополита Пафосского ___» / «Σὲ στήριξη τοῦ
-// Μητροπολίτη Πάφου ___», so the big wordmark needs both forms:
-//   - bigGen — used when the two-line kicker above is visible
-//     (continues the genitive phrase), e.g. ТИХИКА / ΤΥΧΙΚΟΥ
-//   - bigNom — used when the kicker is hidden on tight viewports
-//     and the wordmark must read as a standalone name in nominative,
-//     e.g. ТИХИК / ΤΥΧΙΚΟΣ
-// English isn't case-inflected so the same word works in both contexts.
+// («В поддержку митрополита Пафосского ___» / «Σὲ στήριξη τοῦ
+// Μητροπολίτη Πάφου ___»), so `big` is genitive — it must always
+// be read in context of the two kicker lines above it.
 const BRAND_TEXT = {
   el: {
     top: 'Σε στήριξη του',
     bottom: 'Μητροπολίτη Πάφου',
-    bigGen: 'ΤΥΧΙΚΟΥ',
-    bigNom: 'ΤΥΧΙΚΟΣ',
+    big: 'ΤΥΧΙΚΟΥ',
   },
   ru: {
     top: 'В поддержку',
     bottom: 'митрополита Пафосского',
-    bigGen: 'ТИХИКА',
-    bigNom: 'ТИХИК',
+    big: 'ТИХИКА',
   },
   en: {
     top: 'In support of',
     bottom: 'Metropolitan of Paphos',
-    bigGen: 'TYCHIKOS',
-    bigNom: 'TYCHIKOS',
+    big: 'TYCHIKOS',
   },
 } as const;
 
@@ -133,18 +125,14 @@ export function Header() {
               </span>
 
               <span className="flex flex-col leading-tight min-w-0">
-                {/* Two small kicker lines — hidden on tightest screens */}
-                <span className="hidden sm:block text-[10px] md:text-[11px] tracking-[0.18em] uppercase text-[var(--color-paper)]/70 truncate">
+                <span className="text-[9px] sm:text-[10px] md:text-[11px] tracking-[0.16em] sm:tracking-[0.18em] uppercase text-[var(--color-paper)]/70 truncate">
                   {brand.top}
                 </span>
-                <span className="hidden sm:block text-[10px] md:text-[11px] tracking-[0.18em] uppercase text-[var(--color-paper)]/70 truncate">
+                <span className="text-[9px] sm:text-[10px] md:text-[11px] tracking-[0.16em] sm:tracking-[0.18em] uppercase text-[var(--color-paper)]/70 truncate">
                   {brand.bottom}
                 </span>
-                {/* Big wordmark — nominative under sm (no kicker above),
-                    genitive sm+ where it continues the kicker phrase. */}
-                <span className="font-[family-name:var(--font-display)] text-[15px] sm:text-base md:text-lg tracking-[0.18em] sm:tracking-[0.22em] text-[var(--color-gold-bright)] sm:mt-0.5 truncate">
-                  <span className="sm:hidden">{brand.bigNom}</span>
-                  <span className="hidden sm:inline">{brand.bigGen}</span>
+                <span className="font-[family-name:var(--font-display)] text-[15px] sm:text-base md:text-lg tracking-[0.18em] sm:tracking-[0.22em] text-[var(--color-gold-bright)] mt-0.5 truncate">
+                  {brand.big}
                 </span>
               </span>
             </Link>
