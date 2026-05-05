@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, AlertCircle } from 'lucide-react';
 
 const COPY = {
   el: {
     label: 'Έκκληση',
     title: 'Υπογράψτε την έκκληση',
     subtitle:
-      'Δημόσια έκκληση για επανεξέταση της απόφασης. Η υπογραφή σας θα συμπεριληφθεί στον δημόσιο πίνακα υποστηρικτών.',
+      'Δημόσια έκκληση για επανεξέταση της απόφασης. Η υπογραφή σας θα συμπεριληφθεί στον δημόσιο πίνακα υποστηρικτών μετὰ ἀπὸ ἔλεγχο.',
     fields: {
       name: 'Όνομα και επώνυμο',
       title: 'Ιδιότητα / Σαν',
@@ -16,15 +16,18 @@ const COPY = {
       message: 'Σύντομη δήλωση (προαιρετικό)',
     },
     submit: 'Υπογραφή',
-    sent: 'Ευχαριστούμε. Η υπογραφή σας έχει καταχωρηθεί.',
+    sending: 'Ἀποστολή…',
+    sent: 'Εὐχαριστοῦμε. Ἡ ὑπογραφή σας ἔχει καταχωρηθεῖ.',
     sentBody:
-      'Θα λάβετε μήνυμα επιβεβαίωσης στο email που δηλώσατε. Σύντομα η υπογραφή σας θα προστεθεί στον δημόσιο πίνακα.',
+      'Σύντομα ἡ ὑπογραφή σας θὰ ἐλεγχθεῖ καὶ θὰ προστεθεῖ στὸν δημόσιο πίνακα.',
+    rateLimited: 'Πάρα πολλὲς ἀποστολές. Δοκιμάστε σὲ λίγα λεπτά.',
+    error: 'Κάτι πῆγε στραβά. Δοκιμάστε ξανά.',
   },
   ru: {
     label: 'Обращение',
     title: 'Подпишите обращение',
     subtitle:
-      'Публичное обращение с просьбой о пересмотре решения. Ваша подпись будет включена в открытый список поддерживающих.',
+      'Публичное обращение с просьбой о пересмотре решения. Ваша подпись после проверки будет добавлена в открытый список поддерживающих.',
     fields: {
       name: 'Имя и фамилия',
       title: 'Должность / Сан',
@@ -32,15 +35,18 @@ const COPY = {
       message: 'Краткое заявление (по желанию)',
     },
     submit: 'Подписать',
+    sending: 'Отправка…',
     sent: 'Спасибо. Ваша подпись зарегистрирована.',
     sentBody:
-      'Письмо подтверждения придёт на указанный e-mail. В ближайшее время ваша подпись появится в открытом списке.',
+      'В ближайшее время после проверки ваша подпись будет добавлена в открытый список.',
+    rateLimited: 'Слишком много попыток. Попробуйте через несколько минут.',
+    error: 'Что-то пошло не так. Попробуйте ещё раз.',
   },
   en: {
     label: 'Appeal',
     title: 'Sign the appeal',
     subtitle:
-      'A public appeal calling for review of the decision. Your signature will be included in the open list of supporters.',
+      'A public appeal calling for review of the decision. Your signature, after moderation, will be added to the open list of supporters.',
     fields: {
       name: 'Full name',
       title: 'Position / Rank',
@@ -48,16 +54,57 @@ const COPY = {
       message: 'Brief statement (optional)',
     },
     submit: 'Sign',
+    sending: 'Sending…',
     sent: 'Thank you. Your signature has been recorded.',
     sentBody:
-      'A confirmation email will arrive at the address you provided. Your signature will appear in the open list shortly.',
+      'After moderation, your signature will be added to the open list shortly.',
+    rateLimited: 'Too many attempts. Please try again in a few minutes.',
+    error: 'Something went wrong. Please try again.',
   },
 } as const;
+
+type Status = 'idle' | 'sending' | 'sent' | 'error' | 'rate_limited';
 
 export function SupportPetition({ locale }: { locale: string }) {
   const lang = locale as 'el' | 'ru' | 'en';
   const c = COPY[lang];
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<Status>('idle');
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (status === 'sending') return;
+    setStatus('sending');
+
+    const fd = new FormData(e.currentTarget);
+    const payload = {
+      fullName: String(fd.get('fullName') ?? ''),
+      positionTitle: String(fd.get('positionTitle') ?? ''),
+      country: String(fd.get('country') ?? ''),
+      email: String(fd.get('email') ?? ''),
+      message: String(fd.get('message') ?? ''),
+      _hp: String(fd.get('_hp') ?? ''),
+      locale,
+    };
+
+    try {
+      const res = await fetch('/api/petition', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        setStatus('sent');
+        return;
+      }
+      if (res.status === 429) {
+        setStatus('rate_limited');
+        return;
+      }
+      setStatus('error');
+    } catch {
+      setStatus('error');
+    }
+  }
 
   return (
     <section
@@ -75,7 +122,7 @@ export function SupportPetition({ locale }: { locale: string }) {
           {c.subtitle}
         </p>
 
-        {submitted ? (
+        {status === 'sent' ? (
           <div className="border border-[var(--color-burgundy)]/30 bg-[var(--color-paper)] p-6 md:p-8 flex items-start gap-4">
             <CheckCircle2 size={22} className="text-[var(--color-burgundy)] shrink-0 mt-0.5" />
             <div>
@@ -88,24 +135,39 @@ export function SupportPetition({ locale }: { locale: string }) {
             </div>
           </div>
         ) : (
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setSubmitted(true);
-            }}
-            className="space-y-5"
-          >
-            <Field label={c.fields.name} required />
-            <Field label={c.fields.title} />
-            <Field label={c.fields.country} />
-            <Field label="Email" required type="email" />
-            <Field label={c.fields.message} multiline />
+          <form onSubmit={onSubmit} className="space-y-5">
+            <Field label={c.fields.name} name="fullName" required />
+            <Field label={c.fields.title} name="positionTitle" />
+            <Field label={c.fields.country} name="country" />
+            <Field label="Email" name="email" required type="email" />
+            <Field label={c.fields.message} name="message" multiline />
+
+            {/* Honeypot — hidden from humans, bots fill all fields */}
+            <input
+              type="text"
+              name="_hp"
+              tabIndex={-1}
+              autoComplete="off"
+              className="hidden"
+              aria-hidden="true"
+            />
+
+            {(status === 'error' || status === 'rate_limited') && (
+              <div
+                role="alert"
+                className="flex items-start gap-3 p-4 border border-[var(--color-burgundy)]/40 bg-[var(--color-paper)] text-sm text-[var(--color-burgundy)]"
+              >
+                <AlertCircle size={16} className="shrink-0 mt-0.5" />
+                <span>{status === 'rate_limited' ? c.rateLimited : c.error}</span>
+              </div>
+            )}
 
             <button
               type="submit"
-              className="inline-flex items-center gap-3 px-6 py-3.5 bg-[var(--color-burgundy)] text-[var(--color-paper)] font-medium text-sm tracking-wide hover:bg-[var(--color-burgundy-bright)] transition-colors"
+              disabled={status === 'sending'}
+              className="inline-flex items-center gap-3 px-6 py-3.5 bg-[var(--color-burgundy)] text-[var(--color-paper)] font-medium text-sm tracking-wide hover:bg-[var(--color-burgundy-bright)] transition-colors disabled:opacity-60 disabled:cursor-wait"
             >
-              {c.submit} →
+              {status === 'sending' ? c.sending : `${c.submit} →`}
             </button>
           </form>
         )}
@@ -116,11 +178,13 @@ export function SupportPetition({ locale }: { locale: string }) {
 
 function Field({
   label,
+  name,
   required,
   multiline,
   type = 'text',
 }: {
   label: string;
+  name: string;
   required?: boolean;
   multiline?: boolean;
   type?: string;
@@ -133,12 +197,14 @@ function Field({
       </span>
       {multiline ? (
         <textarea
+          name={name}
           required={required}
           rows={4}
           className="w-full px-4 py-3 bg-[var(--color-paper)] border border-[var(--color-hairline)] text-[var(--color-ink)] focus:outline-none focus:border-[var(--color-burgundy)] transition-colors text-sm"
         />
       ) : (
         <input
+          name={name}
           type={type}
           required={required}
           className="w-full px-4 py-3 bg-[var(--color-paper)] border border-[var(--color-hairline)] text-[var(--color-ink)] focus:outline-none focus:border-[var(--color-burgundy)] transition-colors text-sm"
